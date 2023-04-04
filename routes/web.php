@@ -47,7 +47,8 @@ Route::prefix('admin')->group(function(){
             });
         });
 
-        // Front Routes
+        //<---- Frontend Routes ---->
+
         Route::prefix('')->group(function () {
             Route::controller(FrontController::class)->group(function () {
                 Route::name('')->group(function () {

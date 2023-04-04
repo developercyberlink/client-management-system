@@ -20,6 +20,8 @@ class TaskController extends Controller
         $this->middleware('auth:admin');
     }
 
+    //<------Index-------->
+    
     public function index(){
         $current_auth_id = Auth::id();
         $admin = Admin::find($current_auth_id);

@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+<!-- this is the product index-->
 <div class="card">
     <div class="card-body">
       @can('product_add')

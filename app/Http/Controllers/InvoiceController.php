@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
-use App\Models\User;
 use App\Models\UserContacts;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
@@ -150,5 +151,31 @@ class InvoiceController extends Controller
         $invoice->delete();
 
         return redirect()->route('admin.invoice.index');
+    }
+    //for pdf export
+    public function export($invoice_no){
+        
+        $data = Invoice::where('invoice_no',$invoice_no)->first();
+        $id = $data->id;
+        $data1 = InvoiceItem::where('invoice_id', $id)->get();
+        // dd($data1);
+        // dd($data);
+        // view()->share('invoice',$data);
+        // $pdf= PDF::loadview('admin.invoice.invoice',array('data'=>$data));
+        $pdf = Pdf::loadView('admin.invoice.invoice', [
+            'data'=>$data,
+            'data1'=>$data1
+        ]);
+        return $pdf->stream();
+    }
+    //for email
+    public function email($invoice_no){
+        $data = Invoice::where('invoice_no',$invoice_no)->first();
+        $id = $data->id;
+        $data1 = InvoiceItem::where('invoice_id', $id)->get();
+       return view('email.invocieMail',[
+        "data"=>$data,
+        "data1"=>$data1,
+       ]);
     }
 }

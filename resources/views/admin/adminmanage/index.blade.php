@@ -118,35 +118,38 @@
 @endsection
 
 @section('script')
-  <script>
-function updatePermission(permission_name, role_name){
-  let checked = $("#"+permission_name+"_"+role_name).is(':checked');
+<script>
+  function updatePermission(permission_name, role_name){
+    let checked = $("#"+permission_name+"_"+role_name).is(':checked');
 
-  $.ajaxSetup({
-      headers: {
-          'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-      }
-  });
-
-  $.ajax({
-    method: 'post',
-    url: "{{route('admin.adminmanage.modifypermission')}}",
-    data: {"permission":permission_name, "role":role_name, "checked":checked},
-    statusCode: {
-      403: function (response) {
-        Command: toastr["error"]("You don't have access to this feature");
-      },
-    },
-    success: function(data)
-    {
-      jQuery.each(data.errors, function(key, value){
-            Command: toastr["error"]( value, "Message");
-        });
-        jQuery.each(data.success, function(key, value){
-            Command: toastr["success"]( value, "Message");
-        });
-    }
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
     });
-  </script>
+
+    $.ajax({
+          method: 'post',
+          url: "{{route('admin.adminmanage.modifypermission')}}",
+          data: {"permission":permission_name, "role":role_name, "checked":checked},
+          statusCode: {
+            403: function (response) {
+              toastr["error"]("You don't have access to this feature");
+            },
+          },
+          success: function(data)
+          {
+            jQuery.each(data.errors, function(key, value){
+                  toastr.error (value.message);
+              });
+              jQuery.each(data.success, function(key, value){
+                // alert('here');
+                Command: toastr["success"]( value, "Message");
+              });
+          }
+          });
+
+  }
+</script>
   
 @endsection

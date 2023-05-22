@@ -24,6 +24,7 @@
             @can('invoice_delete')
             <th scope="col">Delete</th>
             @endcan
+            <th scope="col">View PDF/ Send Mail</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +39,11 @@
                 @can('invoice_delete')
                 <td><a href="{{route('admin.invoice.delete', $invoice->invoice_no)}}">Delete</a></td>
                 @endcan()
+                <td>
+                  <a class="btn btn-secondary" href="{{route('admin.invoice.pdf',$invoice->invoice_no)}}" role="button" target="_blank">Export in PDF</a>
+                  <br><br>
+                  <a href="{{route('admin.invoice.email',$invoice->invoice_no)}}" class="btn btn-success" role="button">Send to email</a>
+                </td>
             </tr>
             @endforeach
         </tbody>

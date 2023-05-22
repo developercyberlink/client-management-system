@@ -287,6 +287,10 @@ Route::prefix('admin')->group(function(){
                     Route::get('/edit/{invoice_no}', 'edit')->name('edit');
                     Route::post('/update', 'update')->name('update');
                     Route::get('/delete/{invoice_no}', 'delete')->name('delete');
+                    //export in pdf
+                    Route::get('/pdf/{invoice_no}','export')->name('pdf');
+                    //send to mail
+                    Route::get('/invoice_email/{invoive_no}','email')->name('email');
                 });
             });
         });

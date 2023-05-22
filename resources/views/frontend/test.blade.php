@@ -10,8 +10,6 @@
     <h3>Sudeepa Made Changes.</h3>
     <h3>Test text</h3>
     <h3>Test1 text</h3>
-    <h3>Test2 text</h3>
     <h3>Test3 highlight_file</h3>
-
 </body>
 </html>

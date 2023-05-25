@@ -233,6 +233,8 @@ Route::prefix('admin')->group(function(){
                     Route::get('/service-edit/{id}', 'service_edit')->name('serviceedit');
                     Route::post('/service-update', 'service_update')->name('serviceupdate');
                     Route::get('/services/{id}', 'servicedelete')->name('servicedelete');
+                    Route::post('/documents', 'documents')->name('documents');
+                    Route::get('/documents/{id}', 'documentsDelete')->name('documentsdelete');
                 });
             });
         });

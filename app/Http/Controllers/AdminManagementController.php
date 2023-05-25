@@ -141,8 +141,9 @@ class AdminManagementController extends Controller
         $admin->date_join = $request->get("date_join");
         $admin->gender = $request->get("gender");
         $admin->designation = $request->get("designation");
-         $admin->department = $request->get("department");
-         $admin->status = $request->get("status");
+        $admin->department = $request->get("department");
+        $admin->status = $request->get("status");
+        $admin->syncRoles($request->get('role'));
 
         if($request->filled('password')) {
             $request->validate([

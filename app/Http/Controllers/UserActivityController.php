@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\UserContacts;
-use App\Models\ServiceType;
-use App\Models\Service;
-use App\Models\ProgrammingType;
-use App\Models\client_services;
 use App\Models\Invoice;
+use App\Models\Service;
+use App\Models\ServiceType;
+use Illuminate\Support\Str;
+use App\Models\UserContacts;
+use Illuminate\Http\Request;
+use App\Models\UserDocuments;
+use App\Models\client_services;
+use App\Models\ProgrammingType;
 use Illuminate\Support\Facades\Hash;
 
 class UserActivityController extends Controller
@@ -82,7 +84,8 @@ class UserActivityController extends Controller
 
 
     public function details($id){
-        $data = User::find($id);
+        
+        $data = User::with(['documents'])->find($id);
         $contact = UserContacts::where('user_id',$data->id)->first();
         $contacts = UserContacts::where('user_id',$data->id)->get();
         $client_services = client_services::where('client_id',$data->id)->get();
@@ -93,14 +96,21 @@ class UserActivityController extends Controller
     }
 
     public function destroy($id){
-    $data = User::find($id);
-      if($data->image != NULL){
-         if(file_exists(env('PUBLIC_PATH').'uploads/user-image/' . $data->image)){
+
+        $data = User::find($id);
+        $document = $data->documents->first()->document;
+        if($data->image != NULL){
+            if(file_exists(env('PUBLIC_PATH').'uploads/user-image/' . $data->image)){
             unlink(env('PUBLIC_PATH').'uploads/user-image/' . $data->image);
-          }
-      }
-       $data->delete();
-      return redirect()->back()->with('message','Deleted Sucessfully.');
+            }
+        }
+        if($document != NULL ){
+            if(file_exists(env('PUBLIC_PATH') . 'uploads/documents/' . $document)){
+                unlink(env('PUBLIC_PATH') . 'uploads/documents/' . $document);
+            }
+    }
+        $data->delete();
+        return redirect()->back()->with('message','Deleted Sucessfully.');
     }
 
     public function contacts(Request $request){
@@ -124,6 +134,43 @@ class UserActivityController extends Controller
         $data = UserContacts::find($id);      
         $data->delete();
       return redirect()->back()->with('message','Deleted Sucessfully.');
+    }
+
+    public function documents(Request $request){
+        $request->validate([
+            'document' => ['required', 'max:10000'],
+            'document_title'=>['required', 'string', 'max:191'],
+        ]);
+        $user = User::find($request->get("id")); 
+        $documents = new UserDocuments();
+        $docOriginal =  $request->file('document');
+        $docSize = convertSize($request->file('document')->getSize());
+        $docNewName = '';
+        if($request->hasFile('document')){
+            $doc = $request->file('document')->getClientOriginalName();
+            $extension = $request->file('document')->getClientOriginalExtension();
+            $docName = explode('.', $doc);
+            $docNewName = Str::slug($docName[0]) . '-' . Str::random(7) . '.' . $extension;
+            $path = public_path('uploads/documents');
+            $docOriginal->move($path, $docNewName);
+        }
+        $documents['document'] = $docNewName;
+        $documents['document_title'] = $request->document_title;
+        $documents['user_id'] = $user->id;
+        $documents['document_size'] = $docSize;
+        $documents->save();
+        return redirect()->back()->with('message','Successfully added.'); 
+    }
+
+    public function documentsDelete($id){
+        $data = UserDocuments::find($id);
+        if($data->document != NULL ){
+            if(file_exists(env('PUBLIC_PATH') . 'uploads/documents/' . $data->document)){
+                unlink(env('PUBLIC_PATH') . 'uploads/documents/' . $data->document);
+            }
+        }
+        $data->delete();
+        return redirect()->back()->with('message','Deleted Sucessfully.');
     }
 
     public function services(Request $request){

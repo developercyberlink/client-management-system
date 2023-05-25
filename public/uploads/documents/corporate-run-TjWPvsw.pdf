@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CERTIFICATE OF PARTICIPATION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @media  screen {
+            .main-body{
+                padding: 1rem 2rem;
+                font-family: 'Rubik', sans-serif;
+                background-image: url('https://demo1.lakhetech.com/themes-assets/certificate/final-bg1.jpg');
+                background-size: 100%;
+                background-repeat: no-repeat;
+                background-size:cover;
+                height: 90vh;
+                box-shadow:0 14px 25px rgba(0, 0, 0, 0.16);
+                }
+            }
+        @media  print and (max-width:1215px) {
+                .main-body{
+                padding: 2rem 2rem;
+                font-family: 'Rubik', sans-serif;
+                background-image: url('https://demo1.lakhetech.com/themes-assets/certificate/final-bg1.jpg') !important;
+                background-size: 100%;
+                background-repeat: no-repeat;
+                background-size:cover;
+                background-position: center;
+                box-shadow:0 14px 25px rgba(0, 0, 0, 0.16);
+                }
+                .text{
+                    
+                    padding: 10px;
+                }
+                .text h1{
+                color: #213970;
+                margin: 0px; 
+                }
+            }
+        @media  screen, print {
+            .top-section{
+                margin-bottom: 0px;
+            }
+            .text{
+                text-align: center;
+                margin-top: 0px;
+            }
+            .name{
+                position: relative;
+                text-decoration: underline black 1px;
+            }
+            .text h1{
+                color: #213970;
+                margin-bottom: 0px; 
+            }
+            .text p{
+                font-size: 18px;
+            }   
+            .bold{
+                font-weight:600;
+                color: #C62026;
+            }
+           .u::after,.u1::after{
+                content: "";
+                position: absolute;
+                background-color: black;
+                height: 1px;
+                bottom: -10px;
+                right: 0;
+            }
+            .u,.u1{
+                position: relative;
+            }
+            .u::after {
+                width: 100%;
+                left: 0rem;
+            }
+            .u1::after {
+                width: 110px;
+                left: -4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-body">
+        <div class="top-section">
+            <center><img src="https://demo1.lakhetech.com/themes-assets/images/KM-15-logo.png" alt="logo" width="150px"></center>
+        </div> 
+        <div class="text" >
+            <h1>CERTIFICATE OF PARTICIPATION</h1><br>
+            <p class="top-text">This certificate is presented to</p>
+            <p class="bold name" style="font-size: 25px;"> Lamar Madden</p>
+            <p style="padding:0rem 2rem;">for participating in <span class="bold">Corporate Run</span> at New Marathon Indian Embassy held on 15th Dec, 2023. <br><br> Congratulations for your acheivement and thank you for your paticipation. </p>
+            <div style="margin-top: 2rem;">
+                <p style="margin-bottom: 1rem;"><span class="u" > 2020/02/03</span><span class="u1" style="margin-left: 19rem;"><img src="https://demo1.lakhetech.com/themes-assets/certificate/signature.png" alt="sign" width="90px" height="60px"></span></p>
+                <p  style="margin-top: 0rem; padding-left:25px ;"> Date <span style="margin-left: 22rem;">Signature</span>   </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

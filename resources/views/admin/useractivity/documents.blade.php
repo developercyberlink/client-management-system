@@ -7,7 +7,7 @@
                <div class="p-5 text-center">
                   <span class="dash-widget-icon float-none mb-2"><i class="fa fa-file"></i></span>
                   @if($data->documents->count()>0)
-                  <h4><b>{{$data->name}}</b> has {{$data->documents->count()}} document Uploaded</h4>
+                  <h4><b>{{$data->name}}</b> has {{$data->documents->count()}} {{$data->documents->count()>1?'documents':'document'}} Uploaded</h4>
                   @else
                   <h4><b>{{$data->name}}</b> has no document Uploaded</h4>
                   @endif

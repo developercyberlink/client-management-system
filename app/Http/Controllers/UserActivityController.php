@@ -98,18 +98,22 @@ class UserActivityController extends Controller
     public function destroy($id){
 
         $data = User::find($id);
-        $document = $data->documents->first()->document;
         if($data->image != NULL){
             if(file_exists(env('PUBLIC_PATH').'uploads/user-image/' . $data->image)){
             unlink(env('PUBLIC_PATH').'uploads/user-image/' . $data->image);
             }
         }
-        if($document != NULL ){
-            if(file_exists(env('PUBLIC_PATH') . 'uploads/documents/' . $document)){
-                unlink(env('PUBLIC_PATH') . 'uploads/documents/' . $document);
-            }
-    }
         $data->delete();
+
+        $documents = UserDocuments::where(['user_id'=>$id])->get();
+        foreach($documents as $document) {
+            if($document != NULL ){
+                if(file_exists(env('PUBLIC_PATH') . 'uploads/documents/' . $document->document)){
+                    unlink(env('PUBLIC_PATH') . 'uploads/documents/' . $document->document);
+                }
+            }
+            $document->delete();
+        }
         return redirect()->back()->with('message','Deleted Sucessfully.');
     }
 

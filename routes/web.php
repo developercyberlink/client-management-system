@@ -219,7 +219,7 @@ Route::prefix('admin')->group(function(){
         });  
 
         // User Activity Controller 
-        Route::prefix('clients')->group(function () {
+        Route::prefix('clients')->group(function () {  
             Route::controller(UserActivityController::class)->group(function () {
                 Route::name('clients.')->group(function () {
                     Route::get('/', 'index')->name('index');

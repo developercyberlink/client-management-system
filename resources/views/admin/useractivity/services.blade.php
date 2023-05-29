@@ -165,7 +165,7 @@
                            <div class="col-md-6">  
                            <div class="form-group">
                               <h5 class="clearfix">Time/Unit <span class="text-danger">*</span></h5>
-                            <input type="text" name="time" placeholder="time in  years" class="form-control">
+                            <input type="number" min="1" name="time" placeholder="time in  years" class="form-control">
 
                            </div>
                         </div>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Invoice;
 use App\Models\Service;
-use App\Models\Invoice;
 use Illuminate\Support\Carbon;
 use App\Models\ServiceType;
 use Illuminate\Support\Str;

@@ -81,17 +81,17 @@
                                 {{-- @for($i=0; $i<count($invoice->invoiceItems); $i++) --}}
                                 <div class="row mb-2 mb-sm-0 py-25" id="rowl{{'1'}}">
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="particular[]" value="{{service($service->service)}} ({{ $service->domain }})" id="particularl" placeholder="Particular">
+                                        <input type="text" class="form-control" name="particular[]" value="{{service($service->service)}} ({{ $service->domain }})" readonly id="particularl" placeholder="Particular">
                                         
                                     </div>
                                     <div class="col-md-1"> 
                                         <input type="number" class="form-control" name="amount[]" onchange="updateValue()" value="1" id="amount" placeholder="Quantity" readonly required>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->price}}" name="rate[]" id="rate" placeholder="Rate" required>
+                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->price}}" name="rate[]" id="rate" placeholder="Rate" readonly required>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->time}}" name="time[]" id="time" placeholder="Time" required>
+                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->time}}" name="time[]" id="time" placeholder="Time" readonly required>
                                     </div>
                                     <div class="col-md-2">
                                         <span id="totall{{'1'}}">{{$service->price * $service->time}}</span>

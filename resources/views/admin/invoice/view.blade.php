@@ -54,8 +54,8 @@
                    <li><span>{{$user->email}}</span></li>   
 					</ul>
 				</div>
-				<div class="col-sm-6 col-lg-5 col-xl-4 m-b-20">
-					<span class="text-muted">Payment Details:</span>
+				<div class="col-sm-6 col-lg-5 col-xl-4 m-b-20"> 
+					<span class="text-muted">Payment Details:</span>   
 					<ul class="list-unstyled invoice-payment-details text-danger">
 						 <li><h5>Amount: <span class="text-right">NPR {{$invoice->total}}</span></h5></li>
 						 
@@ -78,7 +78,7 @@
 						@if($invoice->invoiceItems)
 						 @for($i=0; $i<count($invoice->invoiceItems); $i++)
 						<tr>
-							<td>{{$i}}</td>
+							<td>{{$i+1}}</td>
 							<td>{{$invoice->invoiceItems[$i]->particular}}</td>
 							<td>{{$invoice->invoiceItems[$i]->amount}}</td>
 							<td>{{$invoice->invoiceItems[$i]->rate}}</td>
@@ -99,21 +99,22 @@
 							<div class="table-responsive no-border">
 								<table class="table mb-0">
 									<tbody>
-										<tr>
-											<th>Subtotal:</th>
-											<td class="text-right">NPR {{$invoice->total}}</td>
-										</tr>
-										<tr>
+											<tr>
 											<th>Discount:</th>
-											<td class="text-right">NRP {{$invoice->discount}}</td>
+											<td class="text-right">Rs. {{$invoice->discount}}</td>
 										</tr>
+										<tr>
+											<th>Payable Amount:</th>
+											<td class="text-right">Rs. {{$invoice->total - $invoice->vat}}</td>
+										</tr>
+									
 										<tr>
 											<th>Tax: <span class="text-regular">(13%)</span></th>
-											<td class="text-right">NRP {{$invoice->vat}}</td>
+											<td class="text-right">Rs. {{$invoice->vat}}</td>
 										</tr>
 										<tr>
 											<th>Total:</th>
-											<td class="text-right text-danger"><h5>NPR {{$invoice->total - $invoice->discount - $invoice->vat}}</h5></td>
+											<td class="text-right text-danger"><h5>Rs. {{$invoice->total}}</h5></td>
 										</tr>
 									</tbody>
 								</table>

@@ -93,7 +93,10 @@ class UserActivityController extends Controller
         $contacts = UserContacts::where('user_id',$data->id)->get();
         $client_services = client_services::where('client_id',$data->id)->get();
         $service = Service::all();
+        if($client_services->isNotEmpty())
+        {
         $invoice=Invoice::where('service_id',$client_services->first()->id)->first();
+        }
         $servicetype = ServiceType::all();
         $programming = ProgrammingType::all();
         return view('admin.useractivity.single', compact('data','contact','contacts','service','servicetype','programming','client_services'));

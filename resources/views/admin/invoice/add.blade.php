@@ -18,6 +18,7 @@
       <h5 class="card-title">Create new Invoice</h5>
 
       <form action="{{route('admin.invoice.create')}}" method="POST">
+        <input type="hidden" name="status" value="1">
         @csrf
 
         <div class="page-content container">

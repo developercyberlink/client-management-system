@@ -21,7 +21,7 @@ class InvoiceController extends Controller
 
     public function index(){
         $this->authorize('invoice_access');
-        $invoices = Invoice::all();
+        $invoices = Invoice::where('status',1)->get();
 
         return view('admin.invoice.index', ["invoices"=>$invoices]);
     }
@@ -41,13 +41,13 @@ class InvoiceController extends Controller
     }
 
     public function create(Request $request){
-        $this->authorize('invoice_add');
+        $this->authorize('invoice_add');  
 
         $request->validate([
             "amount"=>"required",
             "rate"=>"required",
             "user"=>"required",
-            "invoice_no"=>"required|unique:invoices,invoice_no",
+            "invoice_no"=>"required|unique:invoices,invoice_no", 
             "time"=>"required",
             "date_of_entry"=>"required",
         ]);

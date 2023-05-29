@@ -78,13 +78,19 @@
                        
              <div class="col-md-6">
                 <div class="form-group">
-                    <label>Status </label>
+                    <label>Payment Status </label>
                     <select class="select" name="status">
                     <option value="1" {{$data->status == 1?'selected':''}}>Paid</option> 
                     <option value="0" {{$data->status == 0?'selected':''}}>Due</option>                                                
                     </select>
                 </div>
             </div>
+                     <div class="col-md-6">  
+                           <div class="form-group">
+                              <h5 class="clearfix">Time/Unit <span class="text-danger">*</span></h5>
+                            <input type="text" name="time" placeholder="time in  years" value="{{ $data->time }}" class="form-control">
+                           </div>
+                        </div>
         </div>
                      
             <div class="submit-section">

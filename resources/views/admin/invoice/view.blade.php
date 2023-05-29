@@ -113,7 +113,7 @@
 										</tr>
 										<tr>
 											<th>Total:</th>
-											<td class="text-right text-danger"><h5>NPR {{$invoice->total + $invoice->discount - $invoice->vat}}</h5></td>
+											<td class="text-right text-danger"><h5>NPR {{$invoice->total - $invoice->discount - $invoice->vat}}</h5></td>
 										</tr>
 									</tbody>
 								</table>

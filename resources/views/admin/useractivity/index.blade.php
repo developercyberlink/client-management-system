@@ -150,7 +150,7 @@
                            </div> -->
                         </div>
                      </div>
-                  </div>
+                  </div>  
                </div>
                <div class="submit-section">
                   <button class="btn btn-primary submit-btn">Add </button>

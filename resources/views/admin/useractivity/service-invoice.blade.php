@@ -4,7 +4,7 @@
 <div class="content container-fluid">
 
 <!-- Page Header -->
-<div class="page-header">
+<div class="page-header">  
     <div class="row align-items-center">
         <div class="col">
              
@@ -30,10 +30,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-6 m-b-20">
-                        <input type="hidden" name="id" value="{{$invoice->id}}">
+                        @if($invoice)
+                        <input type="hidden" name="id" value="{{$invoice ? $invoice->id : ''}}">
                         <input type="hidden" value="{{$invoice->date_of_entry}}" id="date_of_entry" class="form-control" name="date_of_entry">
                         <input type="hidden" value="{{$invoice->invoice_no}}" id="invoice_no" name="invoice_no">
                         <input type="hidden" value="{{$invoice->user->id}}" id="user" name="user">
+                        @endif
                         <img src="{{asset('admin-assets/img/logo.png')}}" class="inv-logo" alt="">                       
                         <ul class="list-unstyled">
                              <li>Cyberlink Pvt. Ltd.</li>
@@ -42,10 +44,10 @@
                     </div>
                     <div class="col-sm-6 m-b-20">
                         <div class="invoice-details">
-                            <h3 class="text-uppercase">Invoice #{{$invoice->invoice_no}} <span class="badge bg-inverse-danger">Unpaid </span></h3>
+                            <h3 class="text-uppercase">Invoice #{{$invoice->invoice_no}} <span class="badge {{  $service->status == 1 ? 'bg-inverse-success' : 'bg-inverse-danger' }}">{{ $service->status == 1 ? "PAID":"UNPAID"  }} </span></h3>
                             <ul class="list-unstyled">
-                                <li>Date: <span>{{$invoice->created_at}}</span></li>
-                                <li>Due date: <span>{{$invoice->date_of_entry}}</span></li>
+                                <li>Start Date: <span>{{$service->registered}}</span></li>
+                                <li>Expiry date: <span>{{$service->expiring}}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -61,76 +63,74 @@
                     <div class="col-sm-6 col-lg-5 col-xl-3 m-b-20 ">
                         <span class="text-muted">Payment Details:</span>
                         <ul class="list-unstyled invoice-payment-details text-danger">
-                            <li><h5>Amount: <span class="text-right">NPR {{$invoice->total}}</span></h5></li>
-                             
+                            <li><h5>Amount: <span class="text-right">Rs. {{$service->price * $service->time}}</span></h5></li>
                         </ul>
                     </div>
                  </div>
                     <div class="mt-4">
                             <div class="row">
-                                <div class="col-md-4">Particular</div>
+                                <div class="col-md-4">Particular</div>  
                                 <div class="col-md-1">Qty</div>
                                 <div class="col-md-2">Rate</div>
                                 <div class="col-md-2">Time</div>
                                 <div class="col-md-2">Amount</div>
-                                <div class="col-md-1"></div>
+                                <div class="col-md-1"></div> 
                             </div>
         
-                            <div class="text-95 text-secondary-d3" id="row-area">
-                                @for($i=0; $i<count($invoice->invoiceItems); $i++)
-                                <div class="row mb-2 mb-sm-0 py-25" id="rowl{{$i}}">
+                            <div class="text-95 text-secondary-d3" id="row-area">  
+                                {{-- @for($i=0; $i<count($invoice->invoiceItems); $i++) --}}
+                                <div class="row mb-2 mb-sm-0 py-25" id="rowl{{'1'}}">
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="particular[]" value="{{$invoice->invoiceItems[$i]->particular}}" id="particularl{{$i}}" placeholder="Particular">
+                                        <input type="text" class="form-control" name="particular[]" value="{{service($service->service)}} ({{ $service->domain }})" id="particularl" placeholder="Particular">
+                                        
                                     </div>
-                                    <div class="col-md-1">
-                                        <input type="number" class="form-control" name="amount[]" onchange="updateValue('l{{$i}}')" value="{{$invoice->invoiceItems[$i]->amount}}" id="amountl{{$i}}" placeholder="Quantity" required>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="number" class="form-control" onchange="updateValue('l{{$i}}')" value="{{$invoice->invoiceItems[$i]->rate}}" name="rate[]" id="ratel{{$i}}" placeholder="Rate" required>
+                                    <div class="col-md-1"> 
+                                        <input type="number" class="form-control" name="amount[]" onchange="updateValue()" value="1" id="amount" placeholder="Quantity" readonly required>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="number" class="form-control" onchange="updateValue('l{{$i}}')" value="{{$invoice->invoiceItems[$i]->time}}" name="time[]" id="timel{{$i}}" placeholder="Time" required>
+                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->price}}" name="rate[]" id="rate" placeholder="Rate" required>
                                     </div>
                                     <div class="col-md-2">
-                                        <span id="totall{{$i}}">{{$invoice->invoiceItems[$i]->rate * $invoice->invoiceItems[$i]->amount * $invoice->invoiceItems[$i]->time}}</span>
+                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->time}}" name="time[]" id="time" placeholder="Time" required>
                                     </div>
-                                    <div class="col-md-1">
-                                        <a href="#" class="btn btn-danger" onclick="deleteRow('l{{$i}}')">X</a>
+                                    <div class="col-md-2">
+                                        <span id="totall{{'1'}}">{{$service->price * $service->time}}</span>
                                     </div>
+                                  
                                 </div>
-                                @endfor
+                                
                             </div>
 
-                            <div class="text-right">
-                                <button id="add" type="button" onclick="addRow()" class="btn btn-success">+ Add more</button>
-                            </div>
         
                             <div class="row border-b-2 brc-default-l2"></div>
 
                             <div class="row mt-3">
                                 <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
                                     <label for="remarks">Remarks</label>
-                                    <textarea name="remarks" rows="5" id="remarks" class="form-control">
+                                    <textarea name="remarks" rows="5" id="remarks" class="form-control" placeholder="Enter remarks here">
                                         {{$invoice->remarks}}
                                     </textarea>
                                 </div>
         
-                                <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+                                <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last"> 
                                     <div class="row my-2">
                                         <div class="col-7 text-right">
                                             SubTotal
                                         </div>
                                         <div class="col-5">
-                                            <span class="text-120 text-secondary-d1" id="subtotal">{{$invoice->total + $invoice->discount - $invoice->vat}}</span>
+                                            <span class="text-120 text-secondary-d1" id="subtotal">
+                                                {{$invoice->total + $invoice->discount - $invoice->vat}}
+                                                {{-- {{$service->price * $service->time}} --}}
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="row my-2 align-items-center bgc-primary-l3 p-2">
                                         <div class="col-7 text-right">
                                             Discount:
-                                        </div>
+                                           </div>
                                         <div class="col-5">
-                                            <input type="number" min="0" onchange="discountChange()" value="{{$invoice->discount}}" id="discount-percent" value="0" name="discount">
+                                            <input type="number" min="0" onkeyup="discountChange()" value="{{$if_invoice? $if_invoice->discount : $invoice->discount}}" id="discount-percent" name="discount">
                                         </div>
                                     </div>
         
@@ -176,12 +176,12 @@
 
 @section('script')
 
-<script>
+<script type="text/javascript">
+
 
     $( document ).ready(function() {
         calculateDatabaseValue();
     });
-
     let counter=0;
     let subtotal=0;
     let totalAmount=0;
@@ -196,47 +196,14 @@
         total = {{$invoice->total}};
     }
 
-    function addRow(){
+ 
 
-        counter++;
+    function updateValue(){
+        let amount = $("#amount").val();
+        let rate = $("#rate").val();
+        let time = $("#time").val();
 
-        let htmlObj = `
-        <div class="row mb-2 mb-sm-0 py-25" id="row`+counter+`">
-            <div class="col-md-4"><input type="text" class="form-control" name="particular[]" id="particular`+counter+`" placeholder="Particular"></div>
-            <div class="col-md-1"><input type="number" class="form-control" name="amount[]" onchange=updateValue('`+counter+`') id="amount`+counter+`" placeholder="Quantity" required></div>
-            <div class="col-md-2"><input type="number" class="form-control" onchange=updateValue('`+counter+`') name="rate[]" id="rate`+counter+`" placeholder="Rate" required></div>
-            <div class="col-md-2"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="time[]" id="time`+counter+`" placeholder="Time"></div>
-            <div class="col-2 text-secondary-d2"><span id="total`+counter+`">0</span></div>
-            <div class="col-md-2">
-                <a href="#" class="btn btn-danger" onclick=deleteRow('`+counter+`')>X</a> 
-            </div>
-        </div>
-        `;
-
-        $("#row-area").append(htmlObj); 
-    }
-
-    function deleteRow(id){
-        let amount = $("#amount"+id).val();
-        let rate = $("#rate"+id).val();
-        let time = $("#time"+id).val();
-
-        subtotal -= (amount*rate*time);
-
-        $("#subtotal").html(subtotal);
-        $("#row"+id).remove();
-
-        calculateDiscount();
-        calculateVat();
-        calculateTotal();
-    }
-
-    function updateValue(id){
-        let amount = $("#amount"+id).val();
-        let rate = $("#rate"+id).val();
-        let time = $("#time"+id).val();
-
-        let prevtotal = parseFloat($("#total"+id).text());
+        let prevtotal = parseFloat($("#total").text());
         let currentTotal = amount*rate*time;
 
         subtotal -= prevtotal;
@@ -280,6 +247,6 @@
         calculateTotal();
     }
 
-</script>
+</script> 
 
 @endsection

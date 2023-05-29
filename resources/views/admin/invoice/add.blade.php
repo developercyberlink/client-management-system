@@ -30,19 +30,28 @@
                     </small>
                 </h1>
             </div>
+
         
             <div class="container px-0">
                 <div class="row mt-4">
                     <div class="col-12 col-lg-12">
         
                         <hr class="row brc-default-l1 mx-n1 mb-4" />
+
+                        {{-- <h4>Services</h4> --}}
+                        <div class="filter service_filter_result">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
+                        </div>
+                    </div>
         
                         <div class="row">
                             <div class="col-sm-6">
                                 <div>
                                     <span class="text-sm text-grey-m2 align-middle">To:</span>
                                     <span class="text-600 text-110 text-blue align-middle">
-                                        <select name="user" class="form-control" id="user">
+                                        <select name="user" class="user_sort form-control" id="user">
                                             @foreach ($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
                                             @endforeach
@@ -192,10 +201,10 @@
 
             let htmlObj = `
             <div class="row mb-2 mb-sm-0 py-25" id="row`+counter+`">
-                <div class="col-9 col-sm-3"><input type="text" class="form-control" name="particular[]" id="particular`+counter+`" placeholder="Particular"></div>
-                <div class="d-none d-sm-block col-2"><input type="number" class="form-control" min=0 name="amount[]" onchange=updateValue('`+counter+`') id="amount`+counter+`" placeholder="Quantity" required></div>
-                <div class="d-none d-sm-block col-2 text-95"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="rate[]" id="rate`+counter+`" placeholder="Rate" required></div>
-                <div class="d-none d-sm-block col-2 text-95"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="time[]" id="time`+counter+`" placeholder="Time"></div>
+                <div class="col-md-4"><input type="text" class="form-control" name="particular[]" id="particular`+counter+`" placeholder="Particular"></div>
+                <div class="col-md-1"><input type="number" class="form-control" min=0 name="amount[]" onchange=updateValue('`+counter+`') id="amount`+counter+`" placeholder="Quantity" required></div>
+                <div class="col-md-2"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="rate[]" id="rate`+counter+`" placeholder="Rate" required></div>
+                <div class="col-md-2"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="time[]" id="time`+counter+`" placeholder="Time"></div>
                 <div class="col-2 text-secondary-d2"><span id="total`+counter+`">0</span></div>
                 <div class="col-md-2">
                     <a href="#" class="btn btn-danger" onclick=deleteRow('`+counter+`')>X</a>
@@ -273,6 +282,29 @@
             calculateTotal();
         }
 
+        function getserviceList()
+        {
+        let id=$("#user option:selected").val();
+        
+        }
+           $('.user_sort').change(function (e) { 
+            var val = $(this).find(':checked').val(); 
+                console.log(val);
+
+                $.ajax({
+                    url: document.URL,
+                    type: 'get',
+                    data: {
+                        value: val,
+                    },
+                    success: function (result) {
+                        console.log(result);
+
+                        $('.service_filter_result').replaceWith($('.service_filter_result')).html(result);
+                    }
+                });
+
+            })
     </script>
 
 @endsection

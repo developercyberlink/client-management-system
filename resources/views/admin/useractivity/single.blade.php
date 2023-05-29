@@ -86,12 +86,12 @@
    </div>
    <div class="row">
       <div class="col-lg-12">
-         <div class="tab-content profile-tab-content">
+         <div class="tab-content profile-tab-content">  
             <!-- Services Tab -->
-            @include('admin.useractivity.services')
+            @include('admin.useractivity.services')  
             <!-- /Services Tab -->
              <!-- Contacts Tab -->
-             @include('admin.useractivity.contacts')
+             @include('admin.useractivity.contacts') 
             <!-- /Contacts Tab -->
              <!-- Payment Tab -->
             @include('admin.useractivity.invoices')

@@ -7,25 +7,27 @@ use App\Models\User;
 use App\Models\UserContacts;
 use App\Models\ServiceType;
 use App\Models\Service;
-use App\Models\ProgrammingType;
+use App\Models\ProgrammingType; 
 use App\Models\client_services;
 use App\Models\Invoice;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Models\InvoiceItem;
 
 class UserActivityController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        $this->middleware('auth:admin'); 
     }
 
     public function index(){
-        $data = User::all();
+        $data = User::all(); 
 
         return view('admin.useractivity.index', compact('data'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request){ 
         $request->validate([
             'name' => ['required', 'string', 'max:191'],           
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],          
@@ -81,12 +83,13 @@ class UserActivityController extends Controller
     }
 
 
-    public function details($id){
+    public function details($id){ 
         $data = User::find($id);
         $contact = UserContacts::where('user_id',$data->id)->first();
         $contacts = UserContacts::where('user_id',$data->id)->get();
         $client_services = client_services::where('client_id',$data->id)->get();
         $service = Service::all();
+        $invoice=Invoice::where('service_id',$client_services->first()->id)->first();
         $servicetype = ServiceType::all();
         $programming = ProgrammingType::all();
         return view('admin.useractivity.single', compact('data','contact','contacts','service','servicetype','programming','client_services'));
@@ -117,17 +120,17 @@ class UserActivityController extends Controller
             'phone' => $request->get('phone'),
             'address' => $request->get('address'),     
         ]);
-        return redirect()->back()->with('message','Successfully added.');       
+        return redirect()->back()->with('message','Successfully added.');          
     }
 
     public function contactsdelete($id){
         $data = UserContacts::find($id);      
         $data->delete();
-      return redirect()->back()->with('message','Deleted Sucessfully.');
+      return redirect()->back()->with('message','Deleted Sucessfully.'); 
     }
 
-    public function services(Request $request){
-        $request->validate([
+    public function services(Request $request){ 
+        $request->validate([ 
             'service' => ['required', 'string', 'max:191'],          
             'price'=>['required','string', 'max:10'],                     
         ]);
@@ -139,9 +142,10 @@ class UserActivityController extends Controller
             'programming_type' => $request->get('programming_type'),
             'domain' => $request->get('domain'),
             'price'=>$request->get('price'),
-            'registered' => $request->get('registered'),              
+            'registered' => $request->get('registered'),               
             'expiring' => $request->get('expiring'),
-            'status' => $request->get('status'),      
+            'status' => $request->get('status'),  
+            'time' => $request->get('time')    
         ]);
         return redirect()->back()->with('message','Successfully added.');       
     }
@@ -154,9 +158,9 @@ class UserActivityController extends Controller
       return view('admin.useractivity.service-edit', ["data"=>$data,"service"=>$service,"servicetype"=>$servicetype,"programming"=>$programming]);
     }
 
-    public function service_update(Request $request){
+    public function service_update(Request $request){   
          $request->validate([                      
-            'price'=>['required','string', 'max:10'],                     
+            'price'=>['required','string', 'max:10'],                      
         ]);
         $data = client_services::find($request->id);                
         $data->service_type = $request->get("service_type");        
@@ -166,15 +170,56 @@ class UserActivityController extends Controller
         $data->registered = $request->get("registered");
         $data->expiring = $request->get("expiring");
         $data->status = $request->get("status");
+        $data->time = $request->get("time");
         $data->save();
         return redirect()->back()->with('message','Updated Successfully.');
      
     }
 
 
-    public function servicedelete($id){
+    public function servicedelete($id){ 
         $data = client_services::find($id);      
         $data->delete();
       return redirect()->back()->with('message','Deleted Sucessfully.');
+    }
+
+    public function generate_invoice(Request $request) 
+    {        
+        $this->authorize('invoice_edit');  
+        $id=$request->id;
+        $service = client_services::where('id',$id)->first();  
+        $user=User::where('id',$service->client_id)->first();
+        $if_invoice=Invoice::where('service_id',$service->id)->first();
+        // if($if_invoice == null)
+        // {
+        $invoice = Invoice::updateorCreate([
+            "service_id"=> $service->id],
+            [
+            "user_id"=> $service->client_id,
+            "total"=>$service->price * $service->time,  
+            "vat"=>0,
+            "discount"=>0,
+            "invoice_no"=>rand(1,1000),
+            "remarks"=>NULL,
+            "date_of_entry"=>Carbon::now(),
+            "status"=>$service->status,
+        ]);
+        // dd($invoice);
+          $invoice_item = InvoiceItem::firstorCreate([
+            "invoice_id"=> $invoice->id],
+            [
+            "particular"=> service($service->service),
+            "service_id"=>$service->id,
+            "rate"=>'1',
+            "amount"=>$service->price,
+            "time"=>$service->time,
+        ]);
+    // }
+         return view('admin.useractivity.service-invoice', [
+            "service"=>$service,
+            'invoice'=>$if_invoice ? $if_invoice : $invoice,
+            'user'=>$user ,
+            'if_invoice'=>$if_invoice          
+        ]);   
     }
 }

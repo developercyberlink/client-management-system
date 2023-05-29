@@ -1,4 +1,4 @@
-<div id="Services" class="tab-pane fade show active">
+<div id="Services" class="tab-pane fade show active">   
 <div class="row">
    <div class="col-md-12 d-flex">
       <div class="card   flex-fill">
@@ -8,7 +8,7 @@
                <button class="btn btn-lg btn-rounded btn-primary" data-toggle="modal" data-target="#addservices">Add Services</button>
             </div>
             <!-- blank -->
-            @if($client_services->count()>0)
+            @if($client_services->count()>0)  
             <div class="table-responsive">
                <table class="table mb-0 ">
                   <thead>
@@ -31,7 +31,7 @@
                          <td><span class="d-block">{{servicetype($row->service_type)}}  </span>
                            <a class="text-blue">{{programming_type($row->programming_type)}}</a> 
                         </td>
-                        <td><span class="text-bold d-block">NPR {{$row->price}}</span></td>
+                        <td><span class="text-bold d-block">Rs. {{$row->price * $row->time}}</span></td>
                         <td><span class="d-block text-success">{{$row->registered}}</span></td>
                         <td><span class="d-block text-danger">{{$row->expiring}}</span></td>
                         <td> 
@@ -42,8 +42,11 @@
                         <td class="text-right">
                         <div class="dropdown dropdown-action">
                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert </i></a>
-                           <div class="dropdown-menu dropdown-menu-right"> 
-                            <a class="dropdown-item" href="{{route('admin.clients.serviceedit', $row->id)}}" ><i class="fa fa-pencil m-r-5"></i> Edit</a>                             
+                           <div class="dropdown-menu dropdown-menu-right">  
+                        @if(App\Models\Invoice::where('service_id',$row->id)->first() == NULL)
+                         <a class="dropdown-item" href="{{route('admin.clients.generate-invoice', $row->id)}}" ><i class="fa fa-bill m-r-5"></i> Invoice</a>                             
+                        @endif
+                         <a class="dropdown-item" href="{{route('admin.clients.serviceedit', $row->id)}}" ><i class="fa fa-pencil m-r-5"></i> Edit</a>                             
                              <a class="dropdown-item" href="{{route('admin.clients.servicedelete', $row->id)}}" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                            </div>
                         </div>
@@ -77,7 +80,7 @@
             <form method="POST" action="{{ route('admin.clients.services') }}" enctype="multipart/form-data">
             @csrf
                <div class="row">
-                  <div class="col-md-8 offset-2">
+                  <div class="col-md-6 offset-2">
                      <div class="form-group">
                         <label class="col-form-label">Services  <span class="text-danger">* </span></label>
                         <select class="form-control select serviceselect" name="service">
@@ -150,8 +153,8 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-md-4">
-                           <div class="form-group mt-4">
+                        <div class="col-md-6">
+                           <div class="form-group">
                               <h5 class="clearfix">Payment Status</h5>
                               <select class="select" name="status">
                               <option value="1">Paid</option> 
@@ -159,6 +162,14 @@
                               </select>
                            </div>
                         </div>
+                           <div class="col-md-6">  
+                           <div class="form-group">
+                              <h5 class="clearfix">Time/Unit <span class="text-danger">*</span></h5>
+                            <input type="text" name="time" placeholder="time in  years" class="form-control">
+
+                           </div>
+                        </div>
+                       
                      </div>
                   </div>
                   <!-- WebsiteDesignDevelopment -->

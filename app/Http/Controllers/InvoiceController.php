@@ -9,6 +9,7 @@ use App\Models\UserContacts;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Models\client_services;
 
 class InvoiceController extends Controller
 {
@@ -25,9 +26,16 @@ class InvoiceController extends Controller
         return view('admin.invoice.index', ["invoices"=>$invoices]);
     }
 
-    public function add(){
+    public function add(Request $request){
         $this->authorize('invoice_add');
+      
         $users = User::all();
+           if ($request->ajax()) { 
+             $user_id= $request->value;
+            $services = client_services::where('client_id',$user_id)->get();
+             return view('admin.invoice.filter_service', ["services"=>$services]);
+        }
+
 
         return view('admin.invoice.add', ["users"=>$users]);
     }
@@ -43,6 +51,8 @@ class InvoiceController extends Controller
             "time"=>"required",
             "date_of_entry"=>"required",
         ]);
+
+
 
         $invoice = Invoice::create([
             "user_id"=>$request->get("user"),
@@ -101,17 +111,15 @@ class InvoiceController extends Controller
 
     public function update(Request $request){
         $this->authorize('invoice_edit');
-
         $invoice = Invoice::find($request->get("id"));
-
-        $request->validate([
-            "amount"=>"required",
-            "rate"=>"required",
-            "user"=>"required",
-            "invoice_no"=>"required|unique:invoices,invoice_no,".$invoice->id,
-            "time"=>"required",
-            "date_of_entry"=>"required",
-        ]);
+        // $request->validate([
+        //     "amount"=>"required",
+        //     "rate"=>"required",
+        //     "user"=>"required",
+        //     "invoice_no"=>"required|unique:invoices,invoice_no,".$invoice->id,
+        //     "time"=>"required",
+        //     "date_of_entry"=>"required",
+        // ]);
 
         $invoice->user_id = $request->get("user");
         $invoice->total = $request->get("total");

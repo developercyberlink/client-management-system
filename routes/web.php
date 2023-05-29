@@ -216,9 +216,9 @@ Route::prefix('admin')->group(function(){
                     Route::post('/pushfeedback', 'pushFeedback')->name('pushfeedback');
                 });
             });
-        });
+        });  
 
-        // User Activity Controller
+        // User Activity Controller 
         Route::prefix('clients')->group(function () {
             Route::controller(UserActivityController::class)->group(function () {
                 Route::name('clients.')->group(function () {
@@ -233,6 +233,7 @@ Route::prefix('admin')->group(function(){
                     Route::get('/service-edit/{id}', 'service_edit')->name('serviceedit');
                     Route::post('/service-update', 'service_update')->name('serviceupdate');
                     Route::get('/services/{id}', 'servicedelete')->name('servicedelete');
+                    Route::get('/service-invoice/{id}', 'generate_invoice')->name('generate-invoice');
                 });
             });
         });
@@ -271,13 +272,13 @@ Route::prefix('admin')->group(function(){
                     Route::get('/edit/{id}', 'edit')->name('edit');
                     Route::post('/store', 'store')->name('store');
                     Route::post('/update', 'update')->name('update');
-                    Route::get('/{id}', 'destroy')->name('destroy');
+                    Route::get('/{id}', 'destroy')->name('destroy');   
                 });
             });
         });
 
         // Invoice controller
-        Route::prefix('invoice')->group(function () {
+        Route::prefix('invoice')->group(function () { 
             Route::controller(InvoiceController::class)->group(function () {
                 Route::name('invoice.')->group(function () {
                     Route::get('/', 'index')->name('index');

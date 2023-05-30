@@ -9,10 +9,10 @@
                      <thead>
                         <tr>
                            <th>Invoice ID</th>
+                           <th>Invoice Type</th>
                            <th>Remarks</th>                           
                            <th>Amount</th>
                            <th>Date</th>
-                           <th>Status</th>
                              @can('invoice_edit')
                            <th>Action</th>
                            @endcan
@@ -24,11 +24,11 @@
                            <td>
                               <a href=""><a href="{{route('admin.invoice.view', $row->id)}}">#{{$row->invoice_no}}</a></a>
                            </td>
+                           <td>{{ $row->status==1 ? 'Estimated Invoice' : 'Service Invoice' }}</td>
                            <td><span class="d-block">{{$row->remarks}}</span> </td>                         
                            <td><span class="text-bold d-block">NPR {{$row->total}}</span> </td>
                            <td><span class="d-block text-primary"> Sent on {{$row->date_of_entry}}</span>  
                            </td>                            
-                           <td><span class="badge bg-inverse-success">{{$row->status}}</span></td>
                             @can('invoice_edit')
                            <td>
                               <a href="{{route('admin.invoice.view', $row->id)}}"  class="btn btn-default">View</a> 

@@ -23,6 +23,7 @@
 </div>
 <!-- /Page Header -->
 <form action="{{route('admin.invoice.update')}}" method="POST">
+        <input type="hidden" name="status" value="1">
  @csrf
 <div class="row">
     <div class="col-md-12">
@@ -196,7 +197,7 @@
         total = {{$invoice->total}};
     }
 
-    function addRow(){
+    function addRow(){ 
 
         counter++;
 

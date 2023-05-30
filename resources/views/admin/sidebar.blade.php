@@ -47,7 +47,7 @@
          <a href="#"><i class="la la-files-o"></i>  <span> Accounts  </span>  <span class="menu-arrow"></span></a>
          <ul >
           @can('invoice_access')
-           <li><a href="{{route('admin.invoice.index')}}">Invoice </a></li>
+           <li><a href="{{route('admin.invoice.index')}}">Estimated Bill</a></li>
            @endcan
             @can('invoice_access')
            <li><a href="{{route('admin.invoiceanalysis.index')}}">Invoice report </a></li>

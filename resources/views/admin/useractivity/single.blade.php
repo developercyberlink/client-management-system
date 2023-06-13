@@ -77,9 +77,10 @@
             <ul class="nav nav-tabs nav-tabs-bottom">
                <li class="nav-item col-sm-2"><a class="nav-link active" data-toggle="tab" href="#Services">Services </a></li>
                <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Contacts">Contacts </a></li>
-               <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Payment">Invoices </a></li>
+               <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Payment">Particulars </a></li>
                <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Documents">Documents </a></li>
                <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Tickets">Tickets </a></li>
+               <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Invoice">Invoice </a></li>
             </ul>
          </div>
       </div>
@@ -102,6 +103,9 @@
             <!-- Tickets Tab -->
              @include('admin.useractivity.ticket')
             <!-- /Tickets Tab -->
+            <!-- Invoice Tab -->
+            @include('admin.useractivity.final_invoice')
+            <!-- /Invoice Tab -->
          </div>
       </div>
    </div>

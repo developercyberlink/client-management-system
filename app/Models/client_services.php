@@ -11,4 +11,3 @@ class client_services extends Model
   
     protected $fillable = ["client_id", "service", "service_type", "programming_type","domain","price","registered","expiring","status",'time'];
 }
-  

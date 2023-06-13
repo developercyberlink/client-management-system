@@ -91,114 +91,39 @@
 <div class="add-detail mt-10">
     <div class="w-50 float-left mt-10">
         <p class="m-0 pt-5 text-bold w-100">Invoice Id - <span class="gray-color">{{$data->invoice_no}}</span></p>
-        {{-- <p class="m-0 pt-5 text-bold w-100">Order Id - <span class="gray-color">162695CDFS</span></p>
-        <p class="m-0 pt-5 text-bold w-100">Order Date - <span class="gray-color">03-06-2022</span></p> --}}
+        <p class="m-0 pt-5 text-bold w-100">Date - <span class="gray-color">{{$data->date_of_entry}}</span></p>
     </div>
-        {{-- <div class="w-50 float-left logo mt-10">
-            <img src="{{asset('img/logo.png')}}"> <span>Nicesnippets.com</span>     
-        </div> --}}
+       
     <div style="clear: both;"></div>
 </div>
-{{-- <div class="table-section bill-tbl w-100 mt-10">
-    <table class="table w-100 mt-10">
-        <tr>
-            <th class="w-50">From</th>
-            <th class="w-50">To</th>
-        </tr>
-        <tr>
-            <td>
-                <div class="box-text">
-                    <p></p>
-                    <p>360004</p>
-                    <p>Near Haveli Road,</p>
-                    <p>Lal Darvaja,</p>
-                    <p>India</p>
-                    <p>Contact : 1234567890</p>
-                </div>
-            </td>
-            <td>
-                <div class="box-text">
-                    <p>Rajkot</p>
-                    <p>360012</p>
-                    <p>Hanumanji Temple,</p>
-                    <p>Lati Ploat</p>
-                    <p>Gujarat</p>
-                    <p>Contact : 1234567890</p>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div> --}}
-{{-- <div class="table-section bill-tbl w-100 mt-10">
-    <table class="table w-100 mt-10">
-        <tr>
-            <th class="w-50">Payment Method</th>
-            <th class="w-50">Shipping Method</th>
-        </tr>
-        <tr>
-            <td>Cash On Delivery</td>
-            <td>Free Shipping - Free Shipping</td>
-        </tr>
-    </table>
-</div> --}}
 <div class="table-section bill-tbl w-100 mt-10">
-    <table class="table w-100 mt-10">
+    <table class="table w-55 mt-10">
         <tr>
             
             <th class="w-50">Description</th>
-            {{-- <th class="w-50">Price</th> --}}
             <th class="w-50">Qty</th>
-            <th class="w-50">Discount</th>
             <th class="w-50">Price</th>
             <th class="w-50">Grand Total</th>
         </tr>
         @foreach ($data1 as $item)
         <tr align="center">
            
-           <td>{{$data->remarks}}</td>
+           <td>{{$item->particular}}</td>
            <td>{{$item->amount}}</td>
-           {{-- <td>{{$data->quantity}}</td> --}}
-           <td>{{$data->discount}}</td>
-           <td>{{$item->rate * $item->amount* $item->time}}</td>
-           <td>
-               @if($data->discount == 0)
-               {{$item->rate * $item->amount *$item->time }}
-               @else
-               {{$item->rate * $item->amount *$item->time-$data->discount}}
-               @endif
-           </td>
-           
-            
+           <td>{{$item->rate}}</td>
+           <td>{{$item->rate*$item->time}}</td>
         </tr>
         @endforeach
-        {{-- <tr align="center">
-            <td>$656</td>
-            <td>Mobile</td>
-            <td>$254.2</td>
-            <td>2</td>
-            <td>$500</td>
-            <td>$50</td>
-            <td>$120.00</td>
-        </tr>
-        <tr align="center">
-            <td>$656</td>
-            <td>Mobile</td>
-            <td>$554.2</td>
-            <td>5</td>
-            <td>$500</td>
-            <td>$50</td>
-            <td>$100.00</td>
-        </tr> --}}
         <tr>
             <td colspan="7">
                 <div class="total-part">
                     <div class="total-left w-85 float-left" align="right">
-                        {{-- <p>Sub Total</p> --}}
+                        <p>Discount: </p>
                         <p>Vat added amount (13%)</p>
                         <p>Total Payable</p>
                     </div>
                     <div class="total-right w-15 float-left text-bold" align="right">
-                        {{-- <p>$20</p>  --}}
+                        <p>{{$data->discount}}</p>
                         <p>{{$data->vat}}</p>
                         <p>{{$data->total}}</p>
                     </div>

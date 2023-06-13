@@ -1,4 +1,4 @@
- <div id="Payment" class="tab-pane fade">
+<div id="Invoice" class="tab-pane fade">
    <div class="row">
       <div class="col-md-12 d-flex">
          <div class="card   flex-fill">
@@ -21,13 +21,13 @@
                      </thead>
                      <tbody>
                        @foreach ($data->invoices as $row)
-                       @if($row->status == 0)
+                       @if($row->status == 1 || $row->status == 2)
                         <tr>
                            <td>
                               <a href=""><a href="{{route('admin.invoice.view', $row->id)}}">#{{$row->invoice_no}}</a></a>
                            </td>
                            <td>
-                              @if($row->invoice_status == '2')
+                             @if($row->invoice_status == '2')
                              <span class="badge bg-inverse-warning"> Cancled </span>
                              @elseif($row->invoice_status == '1')
                              <span class="badge bg-inverse-success"> Paid </span>
@@ -35,7 +35,7 @@
                              <span class="badge bg-inverse-danger"> Unpaid </span>
                              @endif
                            </td>
-                           <td>Service Invoice</td>
+                           <td>Estimate Invoice</td>
                            <td><span class="d-block">{{$row->remarks}}</span> </td>                         
                            <td><span class="text-bold d-block">NPR {{$row->total}}</span> </td>
                            <td><span class="d-block text-primary"> Sent on {{$row->date_of_entry}}</span>  
@@ -45,10 +45,16 @@
                               <a href="{{route('admin.invoice.view', $row->id)}}"  class="btn btn-default">View</a> 
                            </td>
                            <td>
-                              <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning">Cancle Invoice</a>
+                              <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning">Cancel Invoice</a>
                            </td>
+                          
                            @endcan
-                           
+                           <td>
+                              <a href="{{route('admin.clients.generateFinalInvoice',$row->id)}}" class="btn btn-secondary">Generate Final Invoice</a>
+                           </td>
+                           <td>
+                              <a href="{{route('admin.invoice.markPaid',$row->id)}}" class="btn btn-success">Mark as Paid</a>
+                           </td>
                         </tr>
                         @endif
                         @endforeach                                 

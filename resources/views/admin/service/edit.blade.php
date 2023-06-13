@@ -35,6 +35,34 @@
                   <input type="text" class="form-control" placeholder="Enter Service" name="title" value="{{$data->title}}">
                </div>
             </div>
+            <div class="col-md-12">
+               <div class="form-check">
+                  @if($data->show_service == 1)
+                  <input class="form-check-input" type="checkbox" name="show_service" value="1" id="flexCheckDefault" checked>
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Show Service Type
+                  </label>
+                  @else
+                  <input class="form-check-input" type="checkbox" name="show_service" value="1" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Show Service Type
+                  </label>
+                  @endif
+                </div>
+                <div class="form-check">
+                  @if($data->show_programming == 1)
+                  <input class="form-check-input" type="checkbox" value="1" name="show_programming" id="flexCheckDefault" checked>
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Show Programming Type
+                  </label>
+                  @else
+                  <input class="form-check-input" type="checkbox" value="1" name="show_programming" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Show Programming Type
+                  </label>
+                  @endif
+                </div>
+            </div>  
             <!--  -->                       
              <div class="col-md-4">
                 <button class="btn btn-primary submit-btn">Update </button>

@@ -24,6 +24,7 @@
 <!-- /Page Header -->
 <form action="{{route('admin.invoice.update')}}" method="POST">
         <input type="hidden" name="status" value="1">
+        <input type="hidden" name="invoice_status" value="0">
  @csrf
 <div class="row">
     <div class="col-md-12">

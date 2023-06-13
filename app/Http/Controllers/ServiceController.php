@@ -42,6 +42,8 @@ class ServiceController extends Controller
 
         $data = Service::find($request->id);
         $data->title = $request->title;
+        $data->show_programming = $request->show_programming;
+        $data->show_service = $request->show_service;
         $data->save();
 
         return redirect()->route('admin.service.index')->with('message','Updated Successfully.');
@@ -49,7 +51,7 @@ class ServiceController extends Controller
 
     public function destroy($id)
     {
-       $data = Service::find($id);      
+       $data = Service::find($id);
        $data->delete();
       return redirect()->back()->with('message','Deleted Sucessfully.');
     }

@@ -93,7 +93,7 @@
                         <div class="dropdown dropdown-action">
                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert </i></a>
                            <div class="dropdown-menu dropdown-menu-right">                              
-                             <a class="dropdown-item" href="{{route('admin.clients.destroy', $row->id)}}" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                             <a class="dropdown-item" href="{{route('admin.clients.destroy', $row->id)}}" onclick="return confirm('Are you sure you want to delete this? If you want to delete the cilent it will result in deleting all the invoices and services taken by the client.')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                            </div>
                         </div>
                      </td>

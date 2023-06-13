@@ -14,7 +14,7 @@
             </ul>
          </div>
           <div class="col-auto float-right ml-auto">
-            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#addservice"><i class="fa fa-plus"></i> Add Order </a>             
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#addservice"><i class="fa fa-plus"></i> Add Service </a>             
          </div> 
       </div>
    </div>
@@ -77,7 +77,23 @@
                               <input type="text" class="form-control" placeholder="Enter Service" name="title">
                            </div>
                         </div>
-                        <!--  -->                       
+                        <!--  -->     
+                        <div class="col-md-12">
+                           <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
+                              <label class="form-check-label" for="flexCheckDefault">
+                                Show Service Type
+                              </label>
+
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
+                              <label class="form-check-label" for="flexCheckDefault">
+                                Show Programming Type
+                              </label>
+
+                            </div>
+                        </div>                  
                      </div>
                   </div>
                </div>

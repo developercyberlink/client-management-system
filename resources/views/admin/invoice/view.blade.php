@@ -14,9 +14,9 @@
 	</div>
 	<div class="col-auto float-right ml-auto">
 		<div class="btn-group btn-group-sm">
-			<button class="btn btn-white">CSV</button>
-			<button class="btn btn-white">PDF</button>
-			<button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
+			<a href="{{route('admin.invoice.email',$invoice->invoice_no)}}" class="btn btn-white">Email</a>
+                <a href="{{route('admin.invoice.pdf',$invoice->invoice_no)}}" class="btn btn-white">PDF</a>
+                <a href="" class="btn btn-white"><i class="fa fa-print fa-lg"></i>Print</a>             
 		</div>
 	</div>
 </div>
@@ -38,10 +38,11 @@
 				</div>
 				<div class="col-sm-6 m-b-20">
 					<div class="invoice-details">
-						<h3 class="text-uppercase">Invoice #{{$invoice->invoice_no}} <span class="badge bg-inverse-danger">Unpaid </span></h3>
+						<h3 class="text-uppercase">Invoice #{{$invoice->invoice_no}} 
+						</h3>
 						<ul class="list-unstyled">
 							<li>Date: <span>{{$invoice->created_at}}</span></li>
-                     <li>Due date: <span>{{$invoice->date_of_entry}}</span></li>
+                    		<li>Due date: <span>{{$invoice->date_of_entry}}</span></li>
 						</ul>
 					</div>
 				</div>

@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Invoice;
+use App\Models\Service;
 use App\Models\InvoiceItem;
 use App\Models\UserContacts;
 use Illuminate\Http\Request;
+use App\Models\client_services;
+use App\Models\EstimateService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-use App\Models\client_services;
 
 class InvoiceController extends Controller
 {
@@ -36,26 +38,32 @@ class InvoiceController extends Controller
              return view('admin.invoice.filter_service', ["services"=>$services]);
         }
 
-
-        return view('admin.invoice.add', ["users"=>$users]);
+        $service = client_services::all();
+        return view('admin.invoice.add', [
+            "users"=>$users, 
+            "service"=> $service,
+        ]);
     }
 
     public function create(Request $request){
         $this->authorize('invoice_add');  
-
+// dd($request->all());
         $request->validate([
             "amount"=>"required",
             "rate"=>"required",
-            "user"=>"required",
+            "user_id"=>"required",
+            "services"=>"required",
             "invoice_no"=>"required|unique:invoices,invoice_no", 
             "time"=>"required",
             "date_of_entry"=>"required",
         ]);
 
 
-
+        $service =  $request->services;
+        $service_id = Service::where('title', $service)->first()->id;
+        // dd($service_id);
         $invoice = Invoice::create([
-            "user_id"=>$request->get("user"),
+            "user_id"=>$request->get("user_id"),
             "total"=>$request->get("total"),
             "vat"=>$request->get("vat"),
             "discount"=>$request->get("discount"),
@@ -63,13 +71,19 @@ class InvoiceController extends Controller
             "remarks"=>$request->get("remarks"),
             "date_of_entry"=>$request->get("date_of_entry"),
             "status"=>$request->get("status"),
+            "invoice_status"=>$request->get("invoice_status"),
         ]);
-
+        // dd($invoice);
         $invoice->save();
+        // dd($invoice->id);
+        $estimate = EstimateService::create([
+            "estimate_id" => $invoice->id,
+            "service_id"=> $service_id
+        ]);
 
         $rates = $request->get("rate");
         $amounts = $request->get("amount");
-        $particulars = $request->get("particular");
+        $particulars = $request->get("services");
         $times = $request->get("time");
 
         for ($i = 0; $i < count($rates); $i++) {
@@ -86,12 +100,15 @@ class InvoiceController extends Controller
     }
 
     public function view($id){       
-        $invoice = Invoice::where('id', $id)->first();        
+        $invoice = Invoice::where('id', $id)->first();    
+        // dd($invoice);    
         $user = User::where('id',$invoice->user_id)->first();      
-
+        $service =client_services::where('id',$invoice->service_id)->first();
+        // dd($service);
         return view('admin.invoice.view', [
             "invoice"=>$invoice,          
             "user"=>$user,           
+            "service"=>$service,
         ]);
     }
 
@@ -129,11 +146,10 @@ class InvoiceController extends Controller
         $invoice->remarks = $request->get("remarks");
         $invoice->date_of_entry = $request->get("date_of_entry");
         $invoice->status = $request->get("status");
-
+        $invoice->invoice_status = $request->get("invoice_status");
         $invoice->save();
-
         DB::table('invoice_items')->where('invoice_id', $request->get("id"))->delete();
-
+        
         $rates = $request->get("rate");
         $amounts = $request->get("amount");
         $particulars = $request->get("particular");
@@ -156,8 +172,11 @@ class InvoiceController extends Controller
         $this->authorize('invoice_delete');
 
         $invoice = Invoice::where('invoice_no', $invoice_no)->first();
+        $estimate = EstimateService::where('estimate_id', $invoice_no)->get();
         $invoice->delete();
-
+        foreach($estimate as $item){
+            $item->delete();
+        }
         return redirect()->route('admin.invoice.index');
     }
     //for pdf export
@@ -185,5 +204,33 @@ class InvoiceController extends Controller
         "data"=>$data,
         "data1"=>$data1,
        ]);
+    }
+    public function cancleInvoice($id){
+        // dd($id);
+        $service_id = Invoice::find($id)->service_id;
+        // dd($service_id);
+        $service = client_services::where('id', $service_id)->first();
+        // dd($service);
+        $invoice = Invoice::find($id);
+        // dd($invoice);
+        // if($service_id != null){
+        //     $service->update([
+        //         'status'=>'2'
+        //     ]);
+        // }
+        // if($service_id == null){
+            // dd($invoice);
+            $invoice->invoice_status = '2';
+            $invoice->update();
+        // }
+        
+        return redirect()->back()->with('message','Invoice has been canceled successfully');
+    }
+    public function markPaid($id){
+       $invoice = Invoice::find($id);
+    //    dd($invoice);
+    $invoice->invoice_status = '1';
+    $invoice->update();
+    return back()->with('message', 'Status Updated');   
     }
 }

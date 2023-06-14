@@ -236,6 +236,7 @@ Route::prefix('admin')->group(function(){
                     Route::get('/service-invoice/{id}', 'generate_invoice')->name('generate-invoice');
                     Route::post('/documents', 'documents')->name('documents');
                     Route::get('/documents/{id}', 'documentsDelete')->name('documentsdelete');
+                    Route::get('/final-invoice/{id}','generateFinalInvoice')->name('generateFinalInvoice');
                 });
             });
         });
@@ -294,6 +295,8 @@ Route::prefix('admin')->group(function(){
                     Route::get('/pdf/{invoice_no}','export')->name('pdf');
                     //send to mail
                     Route::get('/invoice_email/{invoive_no}','email')->name('email');
+                    Route::get('/cancle/{id}','cancleInvoice')->name('cancleInvoice');
+                    Route::get('/paid/{id}','markPaid')->name('markPaid');
                 });
             });
         });

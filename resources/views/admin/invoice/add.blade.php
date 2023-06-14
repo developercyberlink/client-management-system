@@ -19,8 +19,9 @@
 
       <form action="{{route('admin.invoice.create')}}" method="POST">
         <input type="hidden" name="status" value="1">
-        @csrf
 
+        @csrf
+        <input type="hidden" name="invoice_status" value="0">
         <div class="page-content container">
             <div class="page-header text-blue-d2">
                 <h1 class="page-title text-secondary-d1">
@@ -52,7 +53,8 @@
                                 <div>
                                     <span class="text-sm text-grey-m2 align-middle">To:</span>
                                     <span class="text-600 text-110 text-blue align-middle">
-                                        <select name="user" class="user_sort form-control" id="user">
+                                        <select name="user_id" class="user_sort form-control" id="user">
+                                            <option value="">Select the client</option>
                                             @foreach ($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
                                             @endforeach
@@ -78,6 +80,7 @@
                         <div class="mt-4">
                             <div class="row text-600 text-white bgc-default-tp1 py-25">
                                 <div class="col-9 col-sm-3">Particular</div>
+                                
                                 <div class="d-none d-sm-block col-4 col-sm-2">Qty</div>
                                 <div class="d-none d-sm-block col-sm-2">Rate</div>
                                 <div class="d-none d-sm-block col-sm-2">Time</div>
@@ -202,11 +205,22 @@
 
             let htmlObj = `
             <div class="row mb-2 mb-sm-0 py-25" id="row`+counter+`">
-                <div class="col-md-4"><input type="text" class="form-control" name="particular[]" id="particular`+counter+`" placeholder="Particular"></div>
-                <div class="col-md-1"><input type="number" class="form-control" min=0 name="amount[]" onchange=updateValue('`+counter+`') id="amount`+counter+`" placeholder="Quantity" required></div>
-                <div class="col-md-2"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="rate[]" id="rate`+counter+`" placeholder="Rate" required></div>
-                <div class="col-md-2"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="time[]" id="time`+counter+`" placeholder="Time"></div>
-                <div class="col-2 text-secondary-d2"><span id="total`+counter+`">0</span></div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="services[]" id="particular`+counter+`" placeholder="Service">
+                    
+                    </div>
+                <div class="col-md-1">
+                    <input type="number" class="form-control" min=0 name="amount[]" onchange=updateValue('`+counter+`') id="amount`+counter+`" placeholder="Quantity" required>
+                    </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="rate[]" id="rate`+counter+`" placeholder="Rate" required>
+                    </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="time[]" id="time`+counter+`" placeholder="Time">
+                    </div>
+                <div class="col-2 text-secondary-d2">
+                    <span id="total`+counter+`">0</span>
+                    </div>
                 <div class="col-md-2">
                     <a href="#" class="btn btn-danger" onclick=deleteRow('`+counter+`')>X</a>
                 </div>

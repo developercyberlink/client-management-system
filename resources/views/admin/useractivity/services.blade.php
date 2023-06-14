@@ -84,10 +84,10 @@
                      <div class="form-group">
                         <label class="col-form-label">Services  <span class="text-danger">* </span></label>
                         <select class="form-control select serviceselect" name="service">
-                           <option disabled>Select Service </option>
+                           <option value="">Select Service </option>
                            @if($service->count()>0)
                            @foreach($service as $row)
-                           <option value="{{$row->id}}">{{$row->title}}</option>
+                           <option value="{{$row->id}}" id = "option_{{$row->id}}">{{$row->title}}</option>
                            @endforeach
                            @endif
                         </select>
@@ -100,7 +100,7 @@
                         <div class="col-md-6">
                            <div class="form-group">
                               <input type="hidden" name="id" value="{{$data->id}}">
-                              <label class="col-form-label">Domain<span class="text-danger">* </span></label>
+                               <label class="col-form-label">Domain<span class="text-danger">* </span></label>
                               <input type="text" name="domain" class="form-control">
                            </div>
                         </div>
@@ -110,33 +110,34 @@
                               <input type="text" name="price" class="form-control">
                            </div>
                         </div>
-                        <div class="col-md-6">
-                           <div class="form-group">
-                              <label class="col-form-label">Services Type  <span class="text-danger">* </span></label>
-                              <select class="form-control select" name="service_type">
-                                 <option value="0">Select Service Type</option>
-                                 @if($servicetype->count()>0)
-                                 @foreach($servicetype as $row)
-                                 <option value="{{$row->id}}">{{$row->title}}</option>
-                                 @endforeach
-                                 @endif
-                              </select>
-                           </div>
+                  
+                     <div class="col-md-6">
+                        <div class="form-group" id="option_{{$show->id}}">
+                           <label class="col-form-label">Services Type  <span class="text-danger">* </span></label>
+                           <select class="form-control select" name="service_type">
+                              <option value="0">Select Service Type</option>
+                              @if($servicetype->count()>0)
+                              @foreach($servicetype as $row)
+                              <option value="{{$row->id}}">{{$row->title}}</option>
+                              @endforeach
+                              @endif
+                           </select>
                         </div>
-                        
-                        <div class="col-md-6">
-                           <div class="form-group">
-                              <label class="col-form-label">Programming Type <span class="text-danger">* </span></label>
-                              <select class="form-control select" name="programming_type">
-                                 <option value="0">Select Programming </option>
-                                 @if($programming->count()>0)
-                                 @foreach($programming as $row)
-                                 <option value="{{$row->id}}">{{$row->title}}</option>
-                                 @endforeach
-                                 @endif
-                              </select>
-                           </div>
+                     </div>
+                  
+                     <div class="col-md-6">
+                        <div class="form-group">
+                           <label class="col-form-label">Programming Type <span class="text-danger">* </span></label>
+                           <select class="form-control select" name="programming_type">
+                              <option value="0">Select Programming </option>
+                              @if($programming->count()>0)
+                              @foreach($programming as $row)
+                              <option value="{{$row->id}}">{{$row->title}}</option>
+                              @endforeach
+                              @endif
+                           </select>
                         </div>
+                     </div>
                         <div class="col-md-6">
                            <div class="form-group">
                               <label>Registered on <span class="text-danger">*</span></label>

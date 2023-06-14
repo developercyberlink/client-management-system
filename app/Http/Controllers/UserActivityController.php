@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Invoice;
 use App\Models\Service;
-use Illuminate\Support\Carbon;
+use App\Models\InvoiceItem;
 use App\Models\ServiceType;
 use Illuminate\Support\Str;
 use App\Models\UserContacts;
 use Illuminate\Http\Request;
 use App\Models\UserDocuments;
+use Illuminate\Support\Carbon;
 use App\Models\client_services;
+use App\Models\EstimateService;
 use App\Models\ProgrammingType;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\InvoiceItem;
 
 class UserActivityController extends Controller
 {
@@ -87,23 +89,28 @@ class UserActivityController extends Controller
 
 
     public function details($id){
-        
+        // dd('ehe');
         $data = User::find($id);
         $contact = UserContacts::where('user_id',$data->id)->first();
         $contacts = UserContacts::where('user_id',$data->id)->get();
         $client_services = client_services::where('client_id',$data->id)->get();
+
+        $services = client_services::where('client_id',$data->id)->first();
+        // dd($services);
         $service = Service::all();
+        $show = Service::where(['show_service'=>'1', 'show_programming'=>'1'])->first();
+        // dd($show);
         if($client_services->isNotEmpty())
         {
         $invoice=Invoice::where('service_id',$client_services->first()->id)->first();
         }
+        
         $servicetype = ServiceType::all();
         $programming = ProgrammingType::all();
-        return view('admin.useractivity.single', compact('data','contact','contacts','service','servicetype','programming','client_services'));
+        return view('admin.useractivity.single', compact('data','show','contact','contacts','service','servicetype','programming','client_services'));
     }
 
     public function destroy($id){
-
         $data = User::find($id);
         if($data->image != NULL){
             if(file_exists(env('PUBLIC_PATH').'uploads/user-image/' . $data->image)){
@@ -111,8 +118,19 @@ class UserActivityController extends Controller
             }
         }
         $data->delete();
-
+        $service =client_services::where('client_id',$id)->first();
+        if($service != null){
+            $service->delete();
+            $invoice = Invoice::where('service_id', $service->id)->first();
+            if($invoice != null){
+                $invoice->delete();
+            }
+            $estimate_service = EstimateService::where('service_id', $service->id)->first();
+            $estimate_service->delete();
+        }
+        
         $documents = UserDocuments::where(['user_id'=>$id])->get();
+       
         foreach($documents as $document) {
             if($document != NULL ){
                 if(file_exists(env('PUBLIC_PATH') . 'uploads/documents/' . $document->document)){
@@ -121,6 +139,7 @@ class UserActivityController extends Controller
             }
             $document->delete();
         }
+      
         return redirect()->back()->with('message','Deleted Sucessfully.');
     }
 
@@ -208,6 +227,7 @@ class UserActivityController extends Controller
 
     public function service_edit($id){
         $data = client_services::find($id);       
+        
         $service = Service::all();
         $servicetype = ServiceType::all();
         $programming = ProgrammingType::all();
@@ -234,8 +254,23 @@ class UserActivityController extends Controller
 
 
     public function servicedelete($id){ 
+        // dd($id);
         $data = client_services::find($id);      
+        // dd($data);
+       $invoice = Invoice::where('service_id',$data->id)->first();
+    //    dd($invoice);
+    if($data->id != null || $invoice->id != null){
+        $estimate = EstimateService::where([ 'service_id'=>$data->id])->first();
+        if($estimate != null){
+            $estimate->delete();
+        }
+        
+    }
         $data->delete();
+        if($invoice != null){
+            $invoice->delete();  
+        }
+        
       return redirect()->back()->with('message','Deleted Sucessfully.');
     }
 
@@ -278,4 +313,28 @@ class UserActivityController extends Controller
             'if_invoice'=>$if_invoice          
         ]);   
     }
+   public function generateFinalInvoice($id){
+    // dd($id);
+    $this->authorize('invoice_edit'); 
+    $invoice = Invoice::find($id);
+    // dd($id);
+    // dd($invoice);
+    $invoice_item = InvoiceItem::where('invoice_id', $invoice->id)->get();
+    // dd($invoice_item);
+    $service_id = EstimateService::where('estimate_id',$invoice->id)->first();
+    // dd($service_id);
+    $service = Service::where('id', $service_id)->first();
+    // dd($service);
+    $user=User::where('id',$invoice->user_id)->first();
+    // dd($user);
+    $cilent_service = client_services::where([ 'client_id'=>$user->id])->first();
+    // dd($cilent_service);
+    return view('admin.useractivity.service-finalInvoice',[
+        "user"=>$user,
+        "service"=>$service,
+        "invoice"=> $invoice,
+        "invoice_item"=>$invoice_item,
+        'cilent_service'=>$cilent_service
+    ]);
+   }
 }

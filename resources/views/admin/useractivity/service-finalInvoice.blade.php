@@ -48,18 +48,10 @@
                                  {{-- {{  $service->status == 1 ? 'bg-inverse-success' : 'bg-inverse-danger' }}">
                                     {{ $service->status == 1 ? "PAID":"UNPAID"  }} 
                                 </span> --}}
-
-                                @if($service->status == 2)
-                                    <span class="badge bg-inverse-warning"> Cancled </span>
-                                @elseif($service->status == 1)
-                                    <span class="badge bg-inverse-success"> Paid </span>
-                                @else
-                                    <span class="badge bg-inverse-danger"> Unpaid </span>
-                                @endif
                             </h3>
                             <ul class="list-unstyled">
-                                <li>Start Date: <span>{{$service->registered}}</span></li>
-                                <li>Expiry date: <span>{{$service->expiring}}</span></li>
+                                <li>Start Date: <span>{{$cilent_service->registered}}</span></li>
+                                <li>Expiry date: <span>{{$cilent_service->expiring}}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -75,7 +67,7 @@
                     <div class="col-sm-6 col-lg-5 col-xl-3 m-b-20 ">
                         <span class="text-muted">Payment Details:</span>
                         <ul class="list-unstyled invoice-payment-details text-danger">
-                            <li><h5>Amount: <span class="text-right">Rs. {{$service->price * $service->time}}</span></h5></li>
+                            <li><h5>Amount: <span class="text-right">Rs. {{$invoice->total}}</span></h5></li>
                         </ul>
                     </div>
                  </div>
@@ -91,26 +83,27 @@
         
                             <div class="text-95 text-secondary-d3" id="row-area">  
                                 {{-- @for($i=0; $i<count($invoice->invoiceItems); $i++) --}}
-                                <div class="row mb-2 mb-sm-0 py-25" id="rowl{{'1'}}">
+                                 @foreach ($invoice_item as $item)
+                                 <div class="row mb-2 mb-sm-0 py-25" id="rowl{{'1'}}">
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="particular[]" value="{{service($service->service)}} ({{ $service->domain }})" readonly id="particularl" placeholder="Particular">
+                                        <input type="text" class="form-control" name="particular[]" value="{{$item->particular}}" readonly id="particularl" placeholder="Particular">
                                         
                                     </div>
                                     <div class="col-md-1"> 
-                                        <input type="number" class="form-control" name="amount[]" onchange="updateValue()" value="1" id="amount" placeholder="Quantity" readonly required>
+                                        <input type="number" class="form-control" name="amount[]" onchange="updateValue()" value="{{$item->amount}}" id="amount" placeholder="Quantity" readonly required>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->price}}" name="rate[]" id="rate" placeholder="Rate" readonly required>
+                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$item->rate}}" name="rate[]" id="rate" placeholder="Rate" readonly required>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$service->time}}" name="time[]" id="time" placeholder="Time" readonly required>
+                                        <input type="number" class="form-control" onchange="updateValue()" value="{{$item->time}}" name="time[]" id="time" placeholder="Time" readonly required>
                                     </div>
                                     <div class="col-md-2">
-                                        <span id="totall{{'1'}}">{{$service->price * $service->time}}</span>
+                                        <span id="totall{{'1'}}">{{$item->rate * $item->time}}</span>
                                     </div>
                                   
                                 </div>
-                                
+                                 @endforeach
                             </div>
 
         
@@ -142,7 +135,7 @@
                                             Discount:
                                            </div>
                                         <div class="col-5">
-                                            <input type="number" min="0" onkeyup="discountChange()" value="{{$if_invoice? $if_invoice->discount : $invoice->discount}}" id="discount-percent" name="discount">
+                                            <input type="number" min="0" onkeyup="discountChange()" value="{{$invoice? $invoice->discount : $invoice->discount}}" id="discount-percent" name="discount">
                                         </div>
                                     </div>
         
@@ -170,9 +163,9 @@
         
                             <hr />
         
-                            <div>
-                                <input type="submit" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" value="Generate Invoice">
-                            </div>
+                            {{-- <div>
+                                <input type="submit" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" value="Update Invoice">
+                            </div> --}}
                         </div>
                     <div>                
                     

@@ -95,19 +95,24 @@ class UserActivityController extends Controller
         $contacts = UserContacts::where('user_id',$data->id)->get();
         $client_services = client_services::where('client_id',$data->id)->get();
 
-        $services = client_services::where('client_id',$data->id)->first();
+        // $services = client_services::where('client_id',$data->id)->first();
         // dd($services);
+
+        
         $service = Service::all();
         $show = Service::where(['show_service'=>'1', 'show_programming'=>'1'])->first();
         // dd($show);
         if($client_services->isNotEmpty())
         {
         $invoice=Invoice::where('service_id',$client_services->first()->id)->first();
+        // dd($invoice);
+        // $status = cilent_services::where('id', $invoice->service_id)->first();
         }
         
         $servicetype = ServiceType::all();
         $programming = ProgrammingType::all();
-        return view('admin.useractivity.single', compact('data','show','contact','contacts','service','servicetype','programming','client_services'));
+        return view('admin.useractivity.single', compact('data','show','contact','contacts','service','servicetype',
+        'programming','client_services'));
     }
 
     public function destroy($id){
@@ -117,17 +122,46 @@ class UserActivityController extends Controller
             unlink(env('PUBLIC_PATH').'uploads/user-image/' . $data->image);
             }
         }
-        $data->delete();
         $service =client_services::where('client_id',$id)->first();
         if($service != null){
             $service->delete();
             $invoice = Invoice::where('service_id', $service->id)->first();
-            if($invoice != null){
+            // dd($invoice);
+            if($invoice){
                 $invoice->delete();
             }
-            $estimate_service = EstimateService::where('service_id', $service->id)->first();
-            $estimate_service->delete();
+                
+            
         }
+            $estimate = EstimateService::where('client_id', $data->id)->get();
+            // dd($estimate);
+            
+            if($estimate){
+                foreach($estimate as $item){
+                $estimate_invoice = Invoice::where('id', $item->estimate_id)->first();
+                // dd($estimate_invoice);
+                if($estimate_invoice != null){
+                    $estimate_invoice->delete();
+                }
+
+                $item->delete();
+                }
+            }
+            
+        
+        $data->delete();
+        // if($service != null){
+        //     $service->delete();
+        //     $invoice = Invoice::where('service_id', $service->id)->first();
+        //     if($invoice != null){
+        //         $invoice->delete();
+        //     }
+        //     $estimate_service = EstimateService::where('service_id', $service->id)->first();
+        //     if($estimate_service != null){
+        //         $estimate_service->delete();
+        //     }
+            
+        // }
         
         $documents = UserDocuments::where(['user_id'=>$id])->get();
        
@@ -182,7 +216,7 @@ class UserActivityController extends Controller
             $extension = $request->file('document')->getClientOriginalExtension();
             $docName = explode('.', $doc);
             $docNewName = Str::slug($docName[0]) . '-' . Str::random(7) . '.' . $extension;
-            $path = public_path('uploads/documents');
+            $path = public_path('uploads/documents'); 
             $docOriginal->move($path, $docNewName);
         }
         $documents['document'] = $docNewName;
@@ -283,6 +317,7 @@ class UserActivityController extends Controller
         $if_invoice=Invoice::where('service_id',$service->id)->first();
         // if($if_invoice == null)
         // {
+            $random = rand(1,1000)  ;
         $invoice = Invoice::updateorCreate([
             "service_id"=> $service->id],
             [
@@ -290,7 +325,7 @@ class UserActivityController extends Controller
             "total"=>$service->price * $service->time,  
             "vat"=>0,
             "discount"=>0,
-            "invoice_no"=>rand(1,1000),
+            "invoice_no"=>"SER-$random",
             "remarks"=>NULL,
             "date_of_entry"=>Carbon::now(),
             "status"=>$service->status,

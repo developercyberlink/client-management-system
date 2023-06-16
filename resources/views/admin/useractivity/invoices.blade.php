@@ -27,13 +27,17 @@
                               <a href=""><a href="{{route('admin.invoice.view', $row->id)}}">#{{$row->invoice_no}}</a></a>
                            </td>
                            <td>
-                              @if($row->invoice_status == '2')
-                             <span class="badge bg-inverse-warning"> Cancled </span>
-                             @elseif($row->invoice_status == '1')
-                             <span class="badge bg-inverse-success"> Paid </span>
-                             @else
-                             <span class="badge bg-inverse-danger"> Unpaid </span>
-                             @endif
+                              {{-- @foreach ($client_services as $item) --}}
+                              @if(getServiceStatus($row->service_id) == '2')
+                              <span class="badge bg-inverse-warning"> Cancled </span>
+                              @elseif(getServiceStatus($row->service_id) == '1')
+                              <span class="badge bg-inverse-success"> Paid </span>
+                              @else
+                              <span class="badge bg-inverse-danger"> Unpaid </span>
+                              @endif
+                              {{-- @endforeach --}}
+                              {{-- {{getServiceStatus($row->service_id)}} --}}
+                             
                            </td>
                            <td>Service Invoice</td>
                            <td><span class="d-block">{{$row->remarks}}</span> </td>                         
@@ -44,9 +48,11 @@
                            <td>
                               <a href="{{route('admin.invoice.view', $row->id)}}"  class="btn btn-default">View</a> 
                            </td>
+                           @if(getServiceStatus($row->service_id)!= '2')
                            <td>
-                              <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning">Cancle Invoice</a>
+                              <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning" onclick="return confirm('Are you sure you want to cancel the invoice?')">Cancel Invoice</a>
                            </td>
+                           @endif
                            @endcan
                            
                         </tr>

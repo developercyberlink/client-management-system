@@ -28,7 +28,7 @@
                     Invoice
                     <small class="page-info">
                         <i class="fa fa-angle-double-right text-80"></i>
-                        ID: <input type="text" id="invoice_no" name="invoice_no">
+                        ID: <input type="text" id="invoice_no" name="invoice_no" value="EST-">
                     </small>
                 </h1>
             </div>
@@ -314,6 +314,7 @@
                     },
                     success: function (result) {
                         console.log(result);
+                        // alert(result);
 
                         $('.service_filter_result').replaceWith($('.service_filter_result')).html(result);
                     }

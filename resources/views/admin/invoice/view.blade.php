@@ -39,7 +39,15 @@
 				<div class="col-sm-6 m-b-20">
 					<div class="invoice-details">
 						<h3 class="text-uppercase">Invoice #{{$invoice->invoice_no}} 
+							@if($invoice->invoice_status == '2')
+							<span class="badge bg-inverse-warning">Cancle</span>
+							@elseif($invoice->invoice_status == '1')
+							<span class="badge bg-inverse-success">Paid</span>
+							@else
+							<span class="badge bg-inverse-danger">Unpaid</span>
+							@endif
 						</h3>
+						
 						<ul class="list-unstyled">
 							<li>Date: <span>{{$invoice->created_at}}</span></li>
                     		<li>Due date: <span>{{$invoice->date_of_entry}}</span></li>
@@ -94,6 +102,12 @@
 			<div>
 				<div class="row invoice-payment">
 					<div class="col-sm-7">
+						<div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
+							<label for="remarks">Remarks</label>
+							<textarea name="remarks" rows="5" id="remarks" class="form-control" placeholder="Enter remarks here">
+								{{$invoice->remarks}}
+							</textarea>
+						</div>
 					</div>
 					<div class="col-sm-5">
 						<div class="m-b-20">

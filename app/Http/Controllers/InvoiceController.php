@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use services;
 use App\Models\User;
 use App\Models\Invoice;
 use App\Models\Service;
@@ -35,6 +36,7 @@ class InvoiceController extends Controller
            if ($request->ajax()) { 
              $user_id= $request->value;
             $services = client_services::where('client_id',$user_id)->get();
+            // dd($services)
              return view('admin.invoice.filter_service', ["services"=>$services]);
         }
 
@@ -76,11 +78,13 @@ class InvoiceController extends Controller
         // dd($invoice);
         $invoice->save();
         // dd($invoice->id);
+        // dd($invoice->user_id);
         $estimate = EstimateService::create([
             "estimate_id" => $invoice->id,
-            "service_id"=> $service_id
+            "service_id"=> $service_id,
+            "client_id"=>$invoice->user_id,
         ]);
-
+        // dd($estimate);
         $rates = $request->get("rate");
         $amounts = $request->get("amount");
         $particulars = $request->get("services");
@@ -101,7 +105,7 @@ class InvoiceController extends Controller
 
     public function view($id){       
         $invoice = Invoice::where('id', $id)->first();    
-        // dd($invoice);    
+        // dd($invoice);       
         $user = User::where('id',$invoice->user_id)->first();      
         $service =client_services::where('id',$invoice->service_id)->first();
         // dd($service);
@@ -114,8 +118,10 @@ class InvoiceController extends Controller
 
 
     public function edit($invoice_no){
+        // dd($invoice_no);
         $this->authorize('invoice_edit');
         $invoice = Invoice::where('invoice_no', $invoice_no)->first();
+        // dd($invoice);
         $users =  User::all();
         $user = User::where('id',$invoice->user_id)->first();      
 
@@ -127,8 +133,11 @@ class InvoiceController extends Controller
     }
 
     public function update(Request $request){
+        // dd($request->all());
         $this->authorize('invoice_edit');
         $invoice = Invoice::find($request->get("id"));
+        $user = User::where('id',$invoice->user_id)->first(); 
+        // dd($user);
         // $request->validate([
         //     "amount"=>"required",
         //     "rate"=>"required",
@@ -149,7 +158,16 @@ class InvoiceController extends Controller
         $invoice->invoice_status = $request->get("invoice_status");
         $invoice->save();
         DB::table('invoice_items')->where('invoice_id', $request->get("id"))->delete();
+
+        $service= client_services::where('id', $invoice->service_id)->first();
+        // dd($service);
+        if($service != null){
+            $service->update([
+                'status' => $request->get("service_status")
+            ]);
+        }
         
+        // dd($service);
         $rates = $request->get("rate");
         $amounts = $request->get("amount");
         $particulars = $request->get("particular");
@@ -165,7 +183,7 @@ class InvoiceController extends Controller
             ]);
          }
 
-         return redirect()->route('admin.invoice.index');
+         return redirect()->route('admin.clients.details', $user->id);
     }
 
     public function delete($invoice_no){
@@ -206,24 +224,17 @@ class InvoiceController extends Controller
        ]);
     }
     public function cancleInvoice($id){
-        // dd($id);
-        $service_id = Invoice::find($id)->service_id;
-        // dd($service_id);
-        $service = client_services::where('id', $service_id)->first();
-        // dd($service);
-        $invoice = Invoice::find($id);
-        // dd($invoice);
-        // if($service_id != null){
-        //     $service->update([
-        //         'status'=>'2'
-        //     ]);
-        // }
-        // if($service_id == null){
-            // dd($invoice);
+        $invoice = Invoice::where('id', $id)->first();
+        if($invoice->service_id != null){
+            $service = client_services::where('id', $invoice->service_id)->first();
+            $service->update([
+                'status'=>'2'
+            ]);
+        }
+        else{
             $invoice->invoice_status = '2';
             $invoice->update();
-        // }
-        
+        }
         return redirect()->back()->with('message','Invoice has been canceled successfully');
     }
     public function markPaid($id){

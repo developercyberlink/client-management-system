@@ -36,7 +36,7 @@
                         <td><span class="d-block text-danger">{{$row->expiring}}</span></td>
                         <td> 
                         <div class="action-label">
-                          <a class="btn btn-white btn-sm btn-rounded  "  ><i class="fa fa-dot-circle-o text-{{($row->status == 1)?'success':'danger'}}"></i> {{($row->status == 1)?'Paid':'Due'}}</a>
+                          <a class="btn btn-white btn-sm btn-rounded" type="button" id="myButton" onclick = ""><i class="fa fa-dot-circle-o text-{{($row->status == 1)?'success':'danger'}}"></i> {{($row->status == 1)?'Paid':'Due'}}</a>
                         </div>
                        </td>
                         <td class="text-right">

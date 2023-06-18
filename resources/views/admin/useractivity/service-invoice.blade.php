@@ -12,13 +12,13 @@
                <li class="breadcrumb-item"><a href="javascript:history.back(1)"><i class="la la-angle-left"></i> Back </a></li>
             </ul>
         </div>
-        <div class="col-auto float-right ml-auto">
+        {{-- <div class="col-auto float-right ml-auto">
             <div class="btn-group btn-group-sm">
                 <a href="{{route('admin.invoice.email',$invoice->invoice_no)}}" class="btn btn-white">Email</a>
                 <a href="{{route('admin.invoice.pdf',$invoice->invoice_no)}}" class="btn btn-white">PDF</a>
                 <a href="" class="btn btn-white"><i class="fa fa-print fa-lg"></i>Print</a>             
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 <!-- /Page Header -->
@@ -35,6 +35,9 @@
                         <input type="hidden" value="{{$invoice->date_of_entry}}" id="date_of_entry" class="form-control" name="date_of_entry">
                         <input type="hidden" value="{{$invoice->invoice_no}}" id="invoice_no" name="invoice_no">
                         <input type="hidden" value="{{$invoice->user->id}}" id="user" name="user">
+                        @endif
+                        @if($service)
+                        <input type="hidden" value="{{$service->status}}" name="service_status" id="service_status">
                         @endif
                         <img src="{{asset('admin-assets/img/logo.png')}}" class="inv-logo" alt="">                       
                         <ul class="list-unstyled">

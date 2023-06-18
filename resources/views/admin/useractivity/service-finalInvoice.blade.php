@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-sm-6 m-b-20">
                         <div class="invoice-details">
-                            <h3 class="text-uppercase">Invoice #{{$invoice->invoice_no}}
+                            <h3 class="text-uppercase">Invoice FIN-{{$invoice->invoice_no}}
                                  {{-- {{  $service->status == 1 ? 'bg-inverse-success' : 'bg-inverse-danger' }}">
                                     {{ $service->status == 1 ? "PAID":"UNPAID"  }} 
                                 </span> --}}

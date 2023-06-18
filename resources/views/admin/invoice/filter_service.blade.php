@@ -5,9 +5,18 @@
                                      <li>
                                        {{service($value->service)}} ({{ $value->domain }})
                                        <br/>
-                                        Price: {{ $value->price }}
+                                        Rate: {{ $value->price }} 
                                         <br/>
-                                        Payment Status: {{ $value->staus==0 ? 'Due' : 'Paid' }}
+                                        Time in years: {{ $value->time }}
+                                        <br>
+                                        Payment Status: 
+                                        @if(getServiceStatus($value->id) == '2')
+                                        Cancel
+                                        @elseif(getServiceStatus($value->id) == '1')
+                                        Paid
+                                        @else
+                                        Unpaid
+                                        @endif
                                        <br/>
                                        Service type: {{ servicetype($value->service_type) }}
                                     </li>

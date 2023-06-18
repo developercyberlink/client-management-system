@@ -41,20 +41,27 @@
                            <td><span class="d-block text-primary"> Sent on {{$row->date_of_entry}}</span>  
                            </td>                            
                             @can('invoice_edit')
+                            @if($row->invoice_status != '2' && $row->invoice_status != '1')
                            <td>
-                              <a href="{{route('admin.invoice.view', $row->id)}}"  class="btn btn-default">View</a> 
+                              <a href="{{route('admin.invoice.edit', $row->invoice_no)}}"  class="btn btn-default">Edit</a> 
                            </td>
+                           @endif
+                           @if($row->invoice_status != '2' && $row->invoice_status != '1')
                            <td>
-                              <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning">Cancel Invoice</a>
+                              <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning" onclick="return confirm('Are you sure you want to cancel the invoice?')">Cancel Invoice</a>
                            </td>
-                          
+                          @endif
                            @endcan
+                           @if($row->invoice_status != '2')
                            <td>
-                              <a href="{{route('admin.clients.generateFinalInvoice',$row->id)}}" class="btn btn-secondary">Generate Final Invoice</a>
+                              <a href="{{route('admin.clients.generateFinalInvoice',$row->id)}}" class="btn btn-secondary" onclick="return confirm('Are you sure you want to generate the final report')">Final Invoice</a>
                            </td>
+                           @endif
+                           @if($row->invoice_status != '1' && $row->invoice_status != '2')
                            <td>
-                              <a href="{{route('admin.invoice.markPaid',$row->id)}}" class="btn btn-success">Mark as Paid</a>
+                              <a href="{{route('admin.invoice.markPaid',$row->id)}}" class="btn btn-success" onclick="return confirm('Are you sure you want to mark the invoice as paid?')">Mark as Paid</a>
                            </td>
+                           @endif
                         </tr>
                         @endif
                         @endforeach                                 

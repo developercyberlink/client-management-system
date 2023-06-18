@@ -20,7 +20,7 @@ class CreateInvoicesTable extends Migration
                   ->onUpdate("cascade")
                   ->onDelete("cascade");
             $table->float("total")->nullable();
-            $table->float("discount")->default(0.0);
+            $table->float("discount")->default(0.0)->nullable();
             $table->float("vat")->default(0.0);     
             $table->string("invoice_no");
             $table->longText("remarks")

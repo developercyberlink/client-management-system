@@ -112,8 +112,13 @@
             <td>{{$item->rate*$item->time}}</td>
         </tr>
         @endforeach
+      
         <tr>
             <td colspan="7">
+                <div class="remarks" align = "left">
+                    <p>Remarks: </p>
+                    <p>{{$data->remarks}}</p>
+                </div>
                 <div class="total-part">
                     <div class="total-left w-85 float-left" align="right">
                         <p>Discount: </p>

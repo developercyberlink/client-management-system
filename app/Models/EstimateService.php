@@ -10,5 +10,5 @@ class EstimateService extends Model
     use HasFactory;
 
     protected $table  = "estimate_service_rels";
-    protected $fillable = ["estimate_id","service_id"];
+    protected $fillable = ["estimate_id","service_id","client_id"];
 }

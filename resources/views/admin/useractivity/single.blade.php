@@ -195,3 +195,11 @@
    </div>
    <!-- /Profile Modal -->
 @endsection
+   @section('script')
+      <script src="text/javascript">
+         function changeButton(){
+            var button = document.getElementByIs("myButton");
+            button.innerHTML = "Paid";
+         }
+      </script>
+   @endsection

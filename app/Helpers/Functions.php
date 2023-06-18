@@ -1,4 +1,8 @@
 <?php
+// use services;
+// use services;
+use App\Models\client_services;
+use App\Models\Invoice;
 use App\Models\Service;
 use App\Models\ServiceType;
 use App\Models\ProgrammingType;
@@ -42,4 +46,18 @@ function convertSize($size, $precision = 2)
         return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
     }
     return $size;
+}
+function getInvoiceStatus($service_id){
+  $data = Invoice::where('service_id', $service_id)->first();
+  if($data){
+    return $data->invoice_status;
+  }
+  return false;
+}
+function getServiceStatus($service_id){
+  $data = client_services::where('id', $service_id)->first();
+  if($data){
+    return $data->status;
+  }
+  return false;
 }

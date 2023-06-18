@@ -14,9 +14,11 @@
         </div>
         <div class="col-auto float-right ml-auto">
             <div class="btn-group btn-group-sm">
-                <button class="btn btn-white">CSV</button>
-                <button class="btn btn-white">PDF</button>
-                <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
+                <div class="btn-group btn-group-sm">
+                    <a href="{{route('admin.invoice.email',$invoice->invoice_no)}}" class="btn btn-white">Email</a>
+                    <a href="{{route('admin.invoice.pdf',$invoice->invoice_no)}}" class="btn btn-white">PDF</a>
+                    <a href="" class="btn btn-white"><i class="fa fa-print fa-lg"></i>Print</a>             
+                </div>
             </div>
         </div>
     </div>

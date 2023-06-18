@@ -10,4 +10,8 @@ class Service extends Model
     use HasFactory;
 
     protected $fillable = ["title"];
+
+    public function orders() {
+        return $this->hasMany(Orders::class);
+    }
 }

@@ -170,7 +170,7 @@
                      <td>{{$task->title}}</td>
                      <td>
                         <h2 class="table-avatar"> 
-                           <a href="view-client-details.php"><i class="la la-check-circle text-success mr-1"></i> {{$task->user->name}} </a>
+                           <a href="view-client-details.php"><i class="la la-check-circle text-success mr-1"></i> </a>
                         </h2>
                      </td>
                      <td>{{$task->created_at}}</td>

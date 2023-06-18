@@ -43,3 +43,11 @@ function convertSize($size, $precision = 2)
     }
     return $size;
 }
+
+function generateOrderNumber() {
+  $prefix = "CLPL";
+  $uniqueId = uniqid();
+  $timestamp = now()->format('Ymdhms');
+  $result = $timestamp;
+  return $result;
+}

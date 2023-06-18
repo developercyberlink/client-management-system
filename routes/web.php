@@ -1,37 +1,38 @@
 <?php
 
-use App\Http\Controllers\AdminAuth\LoginController;
-use App\Http\Controllers\AdminManagementController;
-use App\Http\Controllers\AdminBankDetailsController;
-use App\Http\Controllers\AdminDocumentController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\FrontController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorSizeController;
-use App\Http\Controllers\Front\PageController;
-use App\Http\Controllers\FrontController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductDetailController;
-use App\Http\Controllers\ProductDetailImageController;
-use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\InvoiceAnalysisController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\PurchaseBillController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\User\UserInvoiceController;
-use App\Http\Controllers\User\UserInquiryController;
-use App\Http\Controllers\User\UserTaskController;
-use App\Http\Controllers\UserTaskManageController;
+use App\Http\Controllers\Front\PageController;
 use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\VendorController;
-use App\Http\Controllers\UserActivityController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceTypeController;
+use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\PurchaseBillController;
+use App\Http\Controllers\UserActivityController;
+use App\Http\Controllers\AdminDocumentController;
+use App\Http\Controllers\ProductDetailController;
+use App\Http\Controllers\User\UserTaskController;
+use App\Http\Controllers\User\UserOrderController;
+use App\Http\Controllers\UserTaskManageController;
+use App\Http\Controllers\AdminAuth\LoginController;
+use App\Http\Controllers\AdminManagementController;
+use App\Http\Controllers\InvoiceAnalysisController;
 use App\Http\Controllers\ProgrammingTypeController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\AdminBankDetailsController;
+use App\Http\Controllers\User\UserInquiryController;
+use App\Http\Controllers\User\UserInvoiceController;
+use App\Http\Controllers\ProductDetailImageController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
 Route::prefix('admin')->group(function(){
     Route::name('admin.')->group(function(){
@@ -329,7 +330,10 @@ Route::prefix('admin')->group(function(){
             Route::controller(OrderController::class)->group(function () {
                 Route::name('order.')->group(function () {
                     Route::get('/', 'index')->name('index');
-                    Route::get('/single/{id}', 'single')->name('single');
+                    Route::post('/create', 'create')->name('create');
+                    Route::get('/edit/{id}', 'edit')->name('single');
+                    Route::post('/update', 'update')->name('update');
+                    Route::get('/delete/{id}', 'delete')->name('delete');
                 });
             });
         });
@@ -416,6 +420,16 @@ Route::group(['prefix' => 'user', 'middleware'=>['web', 'verified']], function (
                     Route::get('/', 'index')->name('index');
                     Route::post('/create', 'create')->name('create');
                     Route::get('/markorder/{id}', 'markOrder')->name('markorder');
+                });
+            });
+        });
+
+        // User Order Controller
+        Route::prefix('order')->group(function () {
+            Route::controller(UserOrderController::class)->group(function (){
+                Route::name('order.')->group(function() {
+                    Route::get('/', 'index')->name('index');
+                    Route::post('/create', 'create')->name('create');
                 });
             });
         });

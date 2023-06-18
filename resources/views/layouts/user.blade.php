@@ -19,6 +19,9 @@
                     <a href="{{route('user.inquiry.index')}}" class="list-group-item list-group-item-action py-2 ripple"><i
                       class="fas fa-lock fa-fw me-3"></i><span>Inquiry</span>
                     </a>
+                    <a href="{{route('user.order.index')}}" class="list-group-item list-group-item-action py-2 ripple"><i
+                      class="fas fa-lock fa-fw me-3"></i><span>Order</span>
+                    </a>
                 </div>
               </div>
             </nav>

@@ -123,7 +123,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::where('invoice_no', $invoice_no)->first();
         // dd($invoice);
         $users =  User::all();
-        $user = User::where('id',$invoice->user_id)->first();      
+        $user = User::where('id',$invoice->user_id)->first(); 
 
         return view('admin.invoice.edit', [
             "invoice"=>$invoice,
@@ -134,6 +134,8 @@ class InvoiceController extends Controller
 
     public function update(Request $request){
         // dd($request->all());
+        // dd($discount);
+
         $this->authorize('invoice_edit');
         $invoice = Invoice::find($request->get("id"));
         $user = User::where('id',$invoice->user_id)->first(); 

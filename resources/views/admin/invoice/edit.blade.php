@@ -137,7 +137,7 @@
                                             <input type="number" min="0" onchange="discountChange()" value="{{$invoice->discount}}" id="discount-percent" value="0" name="discount">
                                         </div>
                                     </div>
-        
+                                    
                                     <div class="row my-2">
                                         <div class="col-7 text-right">
                                             VAT (13%) <input type="checkbox" @if($invoice->vat != null) checked @endif onclick="vatClick()" id="vatcheck" name="vatcheck">
@@ -267,7 +267,6 @@
     function calculateDiscount(){
         discount = $('#discount-percent').val();
     }
-
     function calculateTotal(){
         total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(vat);
         $('#total-val').html(total);
@@ -280,10 +279,27 @@
     }
 
     function discountChange(){
-        calculateDiscount();
-        calculateTotal();
+        if (document.getElementById('vatcheck').checked) {
+            document.getElementById('vatcheck').checked = false;
+        }
+        // vat = 0;
+        document.getElementById('vat-calculation').textContent = 0;
+        if(document.getElementById('vatcheck').checked){
+            calculateTotal();  
+        }else{
+            calculateDiscount();
+        updateDiscount();
+        }
+        // calculateDiscount();
+        // updateDiscount();
+        // calculateTotal();
+        
     }
-
+    function updateDiscount(){
+        total = parseFloat(subtotal) - parseFloat(discount);
+        $('#total-val').html(total);
+        $("#total").val(total);
+    }
 </script>
 
 @endsection

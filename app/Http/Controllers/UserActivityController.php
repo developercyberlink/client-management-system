@@ -364,6 +364,9 @@ class UserActivityController extends Controller
     // dd($user);
     $cilent_service = client_services::where([ 'client_id'=>$user->id])->first();
     // dd($cilent_service);
+    $invoice->final_invoice = '1';
+    $invoice->update();
+    // dd($invoice); 
     return view('admin.useractivity.service-finalInvoice',[
         "user"=>$user,
         "service"=>$service,

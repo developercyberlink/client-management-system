@@ -39,12 +39,22 @@
 				<div class="col-sm-6 m-b-20">
 					<div class="invoice-details">
 						<h3 class="text-uppercase">Invoice #{{$invoice->invoice_no}} 
-							@if($invoice->invoice_status == '2')
-							<span class="badge bg-inverse-warning">Cancle</span>
-							@elseif($invoice->invoice_status == '1')
-							<span class="badge bg-inverse-success">Paid</span>
+							@if($invoice->status == 1)
+								@if($invoice->invoice_status == '2')
+								<span class="badge bg-inverse-warning">Cancle</span>
+								@elseif($invoice->invoice_status == '1')
+								<span class="badge bg-inverse-success">Paid</span>
+								@else
+								<span class="badge bg-inverse-danger">Unpaid</span>
+								@endif
 							@else
-							<span class="badge bg-inverse-danger">Unpaid</span>
+								@if($service->status == '2')
+								<span class="badge bg-inverse-warning">Cancle</span>
+								@elseif($service->status == '1')
+								<span class="badge bg-inverse-success">Paid</span>
+								@else
+								<span class="badge bg-inverse-danger">Unpaid</span>
+								@endif
 							@endif
 						</h3>
 						

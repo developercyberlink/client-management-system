@@ -195,11 +195,17 @@
    </div>
    <!-- /Profile Modal -->
 @endsection
-   @section('script')
-      <script src="text/javascript">
-         function changeButton(){
-            var button = document.getElementByIs("myButton");
-            button.innerHTML = "Paid";
-         }
-      </script>
-   @endsection
+{{-- @section('script')
+<script>
+        const editButton = document.getElementById('edit_button');
+        const cancelButton = document.getElementById('cancel_button');
+        const finalInvoiceButton = document.getElementById('final_button');
+        
+        function finalButton(){
+         editButton.remove();
+         cancelButton.remove();
+
+         // localStorage.setItem('buttonsDisabled', true);
+      }
+</script>
+@endsection --}}

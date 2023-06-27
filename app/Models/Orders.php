@@ -15,4 +15,12 @@ class Orders extends Model
     public function service() {
         return $this->belongsTo(Service::class);
     }
+
+    public static function generateOrderNumber() {
+        $prefix = "CLPL";
+        $uniqueId = uniqid();
+        $timestamp = now()->format('Ymdhms');
+        $result = $timestamp;
+        return $result;
+    }
 }

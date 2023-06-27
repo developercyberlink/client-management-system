@@ -84,7 +84,10 @@
                               <h5 class="clearfix">Payment Status</h5>
                               <select class="select" name="status">
                               <option {{$data->status == 1 ? 'selected' : ''}} value="1">Paid</option> 
-                              <option {{$data->status == 0 ? 'selected' : ''}} value="0">Due</option>                                                
+                              <option {{$data->status == 0 ? 'selected' : ''}} value="0">Due</option> 
+                              <option {{$data->status == 2 ? 'selected' : ''}} value="2">Pending</option> 
+                              <option {{$data->status == 3 ? 'selected' : ''}} value="3">Cancle</option>
+                              <option {{$data->status == 4 ? 'selected' : ''}} value="4">New</option>                                                
                               </select>
                            </div>
                         </div>

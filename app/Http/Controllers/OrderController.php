@@ -33,7 +33,7 @@ class OrderController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
         ]);
         $formFields = [
-            'order_id' => 'CPL' . '-' . generateOrderNumber(),
+            'order_id' => 'CPL' . '-' . Orders::generateOrderNumber(),
             'service_id' => $request->service,
             'email' => $request->email,
             'contact_person' => $request->contactName,

@@ -18,7 +18,12 @@
                 @foreach($orders as $row)
                 <tr>
                     <td>{{$row->service->title}}</td>
-                    <td><a class="btn btn-white btn-sm btn-rounded"><i class="fa fa-dot-circle-o text-{{($row->status == 1)?'success':'danger'}}"></i> {{($row->status == 1)?'Accepted':'Waiting'}}</a>
+                    <td><a><i class="fa fa-dot-circle-o text-{{($row->status == 1)?'success':'danger'}}"></i> @if($row->status == 1)Paid @elseif($row->status == 0)Due @elseif($row->status == 2)Pending @elseif($row->status == 3)Cancelled @elseif($row->status == 4) New @endif</a>
+                    <form method="POST" action="{{route('user.order.orderStatus')}}">
+                      @csrf
+                      <input type="hidden" name="id" value="{{$row->id}}">
+                    @if(($row->status != 3) && ($row->status != 0) && ($row->status != 1))<button class="btn btn-secondary">Cancle</button>@endif
+                    </form>
                     </td>
                 </tr>
                 

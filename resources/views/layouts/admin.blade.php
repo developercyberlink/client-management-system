@@ -32,6 +32,9 @@
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{asset('admin-assets')}}/css/bootstrap-datetimepicker.min.css">
     
+    <!-- Option Select -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{asset('admin-assets')}}/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>

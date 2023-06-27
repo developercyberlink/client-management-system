@@ -18,7 +18,7 @@ class UserOrderController extends Controller
 
     public function index(){
         $services = Service::orderBy('id','desc')->get();
-        $orders= Orders::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $orders= Orders::where(['user_id' => Auth::id()])->whereIn('status', ['0', '1', '2', '4'])->orderBy('id', 'desc')->get();
         return view('user.order.index', compact('services', 'orders'));
     }
 
@@ -28,7 +28,7 @@ class UserOrderController extends Controller
         ]);
         $companyName = User::where('id', Auth::id())->first()->name;
         Orders::create([
-            'order_id' => generateOrderNumber(),
+            'order_id' => Orders::generateOrderNumber(),
             'user_id'=> $request->userId,
             'service_id' => $request->service,
             'company' =>  $companyName,
@@ -40,4 +40,10 @@ class UserOrderController extends Controller
         return redirect()->back()->with('message','Order Created Successfully.');
     }
   
+    public function orderStatus(Request $request) {
+        $order = Orders::find($request->id);
+        $order->status = "3";
+        $order->save();
+        return redirect()->route('user.order.index')->with('message', 'Your order has been cancelled!');
+    }
 }

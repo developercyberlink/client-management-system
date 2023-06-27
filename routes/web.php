@@ -430,6 +430,7 @@ Route::group(['prefix' => 'user', 'middleware'=>['web', 'verified']], function (
                 Route::name('order.')->group(function() {
                     Route::get('/', 'index')->name('index');
                     Route::post('/create', 'create')->name('create');
+                    Route::post('/change-status', 'orderStatus')->name('orderStatus');
                 });
             });
         });

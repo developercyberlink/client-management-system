@@ -50,7 +50,7 @@ class UserActivityController extends Controller
             'image' => $name,
             'password' => Hash::make($request->get('password')),      
         ]);
-        return redirect()->back()->with('message','Successfully added.');       
+        return redirect()->back()->with('message','Client Successfully added.');       
     }
 
     public function update(Request $request)

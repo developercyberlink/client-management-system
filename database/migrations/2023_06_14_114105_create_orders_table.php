@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->string('email')->nullable();
             $table->string('contact_no')->nullable();
             $table->string('price')->nullable();
-            $table->binary('status')->nullable();
+            $table->enum('status', [0, 1, 2, 3]);
             $table->timestamps();
         });
     }

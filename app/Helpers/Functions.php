@@ -49,13 +49,14 @@ function convertSize($size, $precision = 2)
 }
 
 
-function generateOrderNumber() {
-  $prefix = "CLPL";
-  $uniqueId = uniqid();
-  $timestamp = now()->format('Ymdhms');
-  $result = $timestamp;
-  return $result;
-}
+// function generateOrderNumber() {
+//   $prefix = "CLPL";
+//   $uniqueId = uniqid();
+//   $timestamp = now()->format('Ymdhms');
+//   $result = $timestamp;
+//   return $result;
+// }
+
 function getInvoiceStatus($service_id){
   $data = Invoice::where('service_id', $service_id)->first();
   if($data){
@@ -63,6 +64,7 @@ function getInvoiceStatus($service_id){
   }
   return false;
 }
+
 function getServiceStatus($service_id){
   $data = client_services::where('id', $service_id)->first();
   if($data){

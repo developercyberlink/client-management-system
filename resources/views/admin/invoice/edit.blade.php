@@ -84,7 +84,17 @@
                                 @for($i=0; $i<count($invoice->invoiceItems); $i++)
                                 <div class="row mb-2 mb-sm-0 py-25" id="rowl{{$i}}">
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="particular[]" value="{{$invoice->invoiceItems[$i]->particular}}" id="particularl{{$i}}" placeholder="Particular">
+                                        <select name="services[]" id="particular`+counter+`" class="form-control" >
+                                            {{-- <option value="">Select Service</option> --}}
+                                            @foreach ($allService as $item)
+                                                @if($item->title == $invoice->invoiceItems[$i]->particular)
+                                                    <option value="{{$item->title}}" selected>{{$item->title}}</option>
+                                                @else
+                                                    <option value="{{$item->title}}">{{$item->title}}</option>
+                                                @endif
+                                            @endforeach
+                                            
+                                        </select>
                                     </div>
                                     <div class="col-md-1">
                                         <input type="number" class="form-control" name="amount[]" onchange="updateValue('l{{$i}}')" value="{{$invoice->invoiceItems[$i]->amount}}" id="amountl{{$i}}" placeholder="Quantity" required>
@@ -206,7 +216,15 @@
 
         let htmlObj = `
         <div class="row mb-2 mb-sm-0 py-25" id="row`+counter+`">
-            <div class="col-md-4"><input type="text" class="form-control" name="particular[]" id="particular`+counter+`" placeholder="Particular"></div>
+            <div class="col-md-4">
+                <select name="services[]" id="particular`+counter+`" class="form-control" >
+                     <option value="">Select Service</option>
+                     @foreach ($allService as $item)
+                        <option value="{{$item->title}}">{{$item->title}}</option>
+                     @endforeach
+                                            
+                </select>
+            </div>
             <div class="col-md-1"><input type="number" class="form-control" name="amount[]" onchange=updateValue('`+counter+`') id="amount`+counter+`" placeholder="Quantity" required></div>
             <div class="col-md-2"><input type="number" class="form-control" onchange=updateValue('`+counter+`') name="rate[]" id="rate`+counter+`" placeholder="Rate" required></div>
             <div class="col-md-2"><input type="number" class="form-control" min=0 onchange=updateValue('`+counter+`') name="time[]" id="time`+counter+`" placeholder="Time"></div>

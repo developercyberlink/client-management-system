@@ -48,6 +48,14 @@
                                  {{-- {{  $service->status == 1 ? 'bg-inverse-success' : 'bg-inverse-danger' }}">
                                     {{ $service->status == 1 ? "PAID":"UNPAID"  }} 
                                 </span> --}}
+
+                                @if($invoice->invoice_status == '2')
+								<span class="badge bg-inverse-warning">Cancle</span>
+								@elseif($invoice->invoice_status == '1')
+								<span class="badge bg-inverse-success">Paid</span>
+								@else
+								<span class="badge bg-inverse-danger">Unpaid</span>
+								@endif
                             </h3>
                             <ul class="list-unstyled">
                                 <li>Start Date: <span>{{$cilent_service->registered}}</span></li>
@@ -110,14 +118,24 @@
                             <div class="row border-b-2 brc-default-l2"></div>
 
                             <div class="row mt-3">
-                                <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
+                                <div class="col-2 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
                                     <label for="remarks">Remarks</label>
                                     <textarea name="remarks" rows="5" id="remarks" class="form-control" placeholder="Enter remarks here">
                                         {{$invoice->remarks}}
                                     </textarea>
                                 </div>
         
-                                <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last"> 
+                                <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+                                    <div class="row my-2">
+                                        <div class="col-7 text-right">
+                                            Advance
+                                        </div>
+                                        <div class="col-5">
+                                            <span class="text-120 text-secondary-d1" id="subtotal">
+                                                {{$user->advance}}
+                                            </span>
+                                        </div>
+                                    </div> 
                                     <div class="row my-2">
                                         <div class="col-7 text-right">
                                             SubTotal
@@ -129,13 +147,18 @@
                                             </span>
                                         </div>
                                     </div>
+                                     
 
                                     <div class="row my-2 align-items-center bgc-primary-l3 p-2">
                                         <div class="col-7 text-right">
                                             Discount:
                                            </div>
                                         <div class="col-5">
-                                            <input type="number" min="0" onkeyup="discountChange()" value="{{$invoice? $invoice->discount : $invoice->discount}}" id="discount-percent" name="discount">
+                                            {{-- <input type="number" min="0" onkeyup="discountChange()" value="{{$invoice? $invoice->discount : $invoice->discount}}" id="discount-percent" name="discount"> --}}
+                                            <span class="text-120 text-secondary-d1" id="subtotal">
+                                                {{$invoice->discount}}
+                                                {{-- {{$service->price * $service->time}} --}}
+                                            </span>
                                         </div>
                                     </div>
         
@@ -162,7 +185,12 @@
                             </div>
         
                             <hr />
-        
+                            
+                            @if($invoice->invoice_status != '1' && $invoice->invoice_status != '2')
+											<td>
+												<a href="{{route('admin.invoice.markPaid',$invoice->id)}}" class="btn btn-success" onclick="return confirm('Are you sure you want to mark the invoice as paid?')">Mark as Paid</a>
+											</td>
+										@endif
                             {{-- <div>
                                 <input type="submit" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" value="Update Invoice">
                             </div> --}}

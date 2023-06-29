@@ -22,5 +22,12 @@
                                     </li>
                                 @endforeach
                                
+                                <p>Advance Taken : 
+                                    @if($advance != null)    
+                                    Rs.{{$advance}}
+                                    @else
+                                    Rs. 0
+                                    @endif
+                                </p>
                             </div>
                         </div>

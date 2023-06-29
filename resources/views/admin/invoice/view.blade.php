@@ -132,7 +132,10 @@
 											<th>Payable Amount:</th>
 											<td class="text-right">Rs. {{$invoice->total - $invoice->vat}}</td>
 										</tr>
-									
+										<tr>
+											<th>Advance Amount:</th>
+											<td class="text-right">Rs. {{$user->advance}}</td>
+										</tr>
 										<tr>
 											<th>Tax: <span class="text-regular">(13%)</span></th>
 											<td class="text-right">Rs. {{$invoice->vat}}</td>
@@ -141,8 +144,22 @@
 											<th>Total:</th>
 											<td class="text-right text-danger"><h5>Rs. {{$invoice->total}}</h5></td>
 										</tr>
+
+										@if($invoice->invoice_status != '2' && $invoice->invoice_status != '1' && $invoice->final_invoice != '1' && $invoice->status != null)
+											<td>
+												<a href="{{route('admin.invoice.cancleInvoice',$invoice->id)}}" class="btn btn-warning" id="cancel_button" onclick="return confirm('Are you sure you want to cancel the invoice?')">Cancel Invoice</a>
+											</td>
+										@endif
+										
+										@if($invoice->invoice_status != '2' && $invoice->invoice_status != '1' && $invoice->final_invocie != '1' && $invoice->status !=  null)
+											<td>
+												<a href="{{route('admin.clients.generateFinalInvoice',$invoice->id)}}" id="final_button" class="btn btn-secondary" onclick="finalButton();">Final Invoice</a>
+											</td>
+										@endif
+										
 									</tbody>
 								</table>
+								
 							</div>
 						</div>
 					</div>

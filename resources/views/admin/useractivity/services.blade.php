@@ -158,6 +158,7 @@
                            <div class="form-group">
                               <h5 class="clearfix">Payment Status</h5>
                               <select class="select" name="status">
+                                 <option value="">Selec Payment Status</option>
                               <option value="1">Paid</option> 
                               <option value="0">Due</option>                                                
                               </select>

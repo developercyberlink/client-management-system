@@ -123,7 +123,17 @@
                                             <input type="hidden" name="discount" id="discount">
                                         </div>
                                     </div>
-        
+
+                                    <div class="row my-2 align-items-center bgc-primary-l3 p-2">
+                                        <div class="col-7 text-right">
+                                            Advance Taken:
+                                        </div>
+                                        <div class="col-5">
+                                            <input type="number" min="0" onchange="advanceChange()" id="advance-percent" value="0" name="advance">
+                                            <input type="hidden" name="advance" id="advance">
+                                        </div>
+                                    </div>
+                                    
                                     <div class="row my-2">
                                         <div class="col-7 text-right">
                                             VAT (13%) <input type="checkbox" onclick="vatClick()" id="vatcheck" name="vatcheck">
@@ -155,7 +165,7 @@
                             </div>
         
                             <hr />
-        
+                            
                             <div>
                                 <input type="submit" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" value="Generate Invoice">
                             </div>
@@ -183,7 +193,7 @@
         let discount=0;
         let vat=0;
         let total=0;
-
+        let advance =0;
         var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
         var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
 
@@ -206,8 +216,12 @@
             let htmlObj = `
             <div class="row mb-2 mb-sm-0 py-25" id="row`+counter+`">
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="services[]" id="particular`+counter+`" placeholder="Service">
-                    
+                    <select name="services[]" id="particular`+counter+`" class="form-control" >
+                     <option value="">Select Service</option>
+                     @foreach ($allService as $item)
+                        <option value="{{$item->title}}">{{$item->title}}</option>
+                     @endforeach           
+                </select>
                     </div>
                 <div class="col-md-1">
                     <input type="number" class="form-control" min=0 name="amount[]" onchange=updateValue('`+counter+`') id="amount`+counter+`" placeholder="Quantity" required>
@@ -266,7 +280,12 @@
 
         function calculateVat(){
             if($('#vatcheck').is(":checked")){
-                vat = ((subtotal-discount)*0.13).toFixed(2);
+                if(advance){
+                    vat = ((subtotal-advance-discount)*0.13).toFixed(2);
+                }
+                else{
+                    vat = ((subtotal-discount)*0.13).toFixed(2);
+                }
             }else{
                 vat = 0;
             }
@@ -276,12 +295,18 @@
 
         function calculateDiscount(){
             discount = $('#discount-percent').val();
-            
+            // alert(discount);
             $("#discount").val(discount);
         }
-
+        function calculateAdvance(){
+            // alert('here');
+            advance = $('#advance-percent').val();
+            // alert(advance);
+            $('#advance').val(advance);
+        }
+        
         function calculateTotal(){
-            total = parseFloat(subtotal) - parseFloat(discount) + parseFloat(vat);
+            total = parseFloat(subtotal) - parseFloat(advance) - parseFloat(discount) + parseFloat(vat);
             $('#total-val').html(total);
             $("#total").val(total);
             $('#total-val-word').html(inWords(parseInt(total)));
@@ -294,6 +319,10 @@
 
         function discountChange(){
             calculateDiscount();
+            calculateTotal();
+        }
+        function advanceChange(){
+            calculateAdvance();
             calculateTotal();
         }
 

@@ -41,6 +41,26 @@
                               <div class="staff-id">
                                 <a class="btn btn-white btn-sm btn-rounded  "  ><i class="fa fa-dot-circle-o text-{{($data->status == 1)?'success':'danger'}}"></i> {{($data->status == 1)?'Active':'Inactive'}}</a>
                               </div>
+                              <div>
+                                 @if($invoices != null)
+                                  <p>Total Amount: Rs. {{$invoices->total}} </p>
+                                 @if($invoices->invoice_status != '1')
+                                 <p>Payment Made: {{$sum}}</p>
+                                 @else
+                                 <p>Payment Made: {{$invoices->total}} </p>
+                                 @endif
+                                 <p>Due: Rs.
+                                    @if($invoices->invoice_status != '1')
+                                       {{$invoices->total - $sum}}
+                                    @else
+                                    0
+                                    @endif
+                                 </p>
+                                 @endif
+                                 @if($data->advance != null)
+                                 <p>Advance: {{$data->advance}}</p>
+                                 @endif
+                              </div>
                            </div>
                         </div>
                         <div class="col-md-7">
@@ -79,8 +99,9 @@
                <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Contacts">Contacts </a></li>
                <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Payment">Particulars </a></li>
                <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Documents">Documents </a></li>
-               <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Tickets">Tickets </a></li>
+               {{-- <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Tickets">Tickets </a></li> --}}
                <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#Invoice">Invoice </a></li>
+               <li class="nav-item col-sm-2"><a class="nav-link" data-toggle="tab" href="#recepit">Payment</a></li>
             </ul>
          </div>
       </div>
@@ -101,11 +122,14 @@
              @include('admin.useractivity.documents')
             <!-- /Document Tab -->           
             <!-- Tickets Tab -->
-             @include('admin.useractivity.ticket')
+             {{-- @include('admin.useractivity.ticket') --}}
             <!-- /Tickets Tab -->
             <!-- Invoice Tab -->
             @include('admin.useractivity.final_invoice')
             <!-- /Invoice Tab -->
+            <!-- Payment Recepit Tab -->
+            @include('admin.useractivity.payment')
+            <!-- /Payment Recepit Tab -->
          </div>
       </div>
    </div>

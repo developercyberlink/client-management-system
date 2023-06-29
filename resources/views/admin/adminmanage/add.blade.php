@@ -38,7 +38,7 @@
                                         <div class="form-group">
                                             <label>Birth Date</label>
                                             <div class="cal-icon">
-                                                <input class="form-control datetimepicker" type="text" value="01/01/1999" name="dob">
+                                                <input class="form-control datetimepicker" type="text" placeholder="Enter date of birth" name="dob">
                                             </div>
                                         </div>
                                     </div>                                           

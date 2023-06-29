@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Models\UserContacts;
 use Illuminate\Http\Request;
 use App\Models\UserDocuments;
+use App\Models\PaymentReceipt;
 use Illuminate\Support\Carbon;
 use App\Models\client_services;
 use App\Models\EstimateService;
@@ -30,11 +31,22 @@ class UserActivityController extends Controller
 
         return view('admin.useractivity.index', compact('data'));
     }
-
+    public function drafts(){
+        $user = User::where('is_draft', '1')->get();
+        return view('admin.useractivity.drafts', compact('user'));
+    }
+    public function updateDraft($id){
+        $user = User::where('id', $id)->first();
+        $user->is_draft = '1';
+        $user->status = '0';
+        $user->update();
+        return back()->with('message', 'Cilent is moved to drafts');
+    }
     public function store(Request $request){ 
         $request->validate([
             'name' => ['required', 'string', 'max:191'],           
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],          
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],      
+            'password'=>'required'    
         ]);
         $name = '';
         //upload document
@@ -86,33 +98,30 @@ class UserActivityController extends Controller
         return redirect()->back()->with('message','Updated Successfully.');
     }
 
-
-
     public function details($id){
-        // dd('ehe');
         $data = User::find($id);
         $contact = UserContacts::where('user_id',$data->id)->first();
         $contacts = UserContacts::where('user_id',$data->id)->get();
         $client_services = client_services::where('client_id',$data->id)->get();
-
-        // $services = client_services::where('client_id',$data->id)->first();
-        // dd($services);
-
-        
         $service = Service::all();
         $show = Service::where(['show_service'=>'1', 'show_programming'=>'1'])->first();
-        // dd($show);
         if($client_services->isNotEmpty())
         {
         $invoice=Invoice::where('service_id',$client_services->first()->id)->first();
-        // dd($invoice);
-        // $status = cilent_services::where('id', $invoice->service_id)->first();
         }
         
         $servicetype = ServiceType::all();
         $programming = ProgrammingType::all();
+        $invoices = Invoice::where(['final_invoice'=>'1', 'user_id'=>$data->id])->latest()->first();
+        // dd($invoices);
+        
+        $payment = PaymentReceipt::where('user_id', $data->id)->get();
+        $sum = PaymentReceipt::where(['user_id'=> $data->id, 'advance'=>null])->sum('amount');
+        // dd($sum);    
+        // $amount = PaymentReceipt::select('amount')->where('user_id',$data->id)->sum();
+        // dd($amount);
         return view('admin.useractivity.single', compact('data','show','contact','contacts','service','servicetype',
-        'programming','client_services'));
+        'programming','client_services','invoices','payment','sum'));
     }
 
     public function destroy($id){
@@ -126,24 +135,18 @@ class UserActivityController extends Controller
         if($service != null){
             $service->delete();
             $invoice = Invoice::where('service_id', $service->id)->first();
-            // dd($invoice);
             if($invoice){
                 $invoice->delete();
             }
-                
-            
         }
             $estimate = EstimateService::where('client_id', $data->id)->get();
-            // dd($estimate);
             
             if($estimate){
                 foreach($estimate as $item){
                 $estimate_invoice = Invoice::where('id', $item->estimate_id)->first();
-                // dd($estimate_invoice);
                 if($estimate_invoice != null){
                     $estimate_invoice->delete();
                 }
-
                 $item->delete();
                 }
             }
@@ -241,7 +244,10 @@ class UserActivityController extends Controller
     public function services(Request $request){
         $request->validate([
             'service' => ['required', 'string', 'max:191'],          
-            'price'=>['required','string', 'max:10'],                     
+            'price'=>['required','string', 'max:10'],       
+            'registered'=>'required',
+            'expiring'=>'required',
+            'status'=>'required'                
         ]);
         $user = User::find($request->get("id"));        
         $services = client_services::create([
@@ -375,4 +381,5 @@ class UserActivityController extends Controller
         'cilent_service'=>$cilent_service
     ]);
    }
+   
 }

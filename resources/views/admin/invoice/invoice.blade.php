@@ -98,14 +98,15 @@
 <div class="table-section bill-tbl w-100 mt-10">
     <table class="table w-100 mt-10">
         <tr>
-            
+            <th class="w-10">S.No</th>
             <th class="w-50">Description</th>
-            <th class="w-50">Qty</th>
-            <th class="w-50">Price</th>
-            <th class="w-50">Grand Total</th>
+            <th class="w-10">Qty</th>
+            <th class="w-20">Price</th>
+            <th class="w-30">Grand Total</th>
         </tr>
         @foreach ($data1 as $item)
         <tr>
+            <td>{{$loop->iteration}}</td>
             <td>{{$item->particular}}</td>
             <td>{{$item->amount}}</td>
             <td>{{$item->rate}}</td>
@@ -114,7 +115,7 @@
         @endforeach
       
         <tr>
-            <td colspan="7">
+            <td colspan="5">
                 <div class="remarks" align = "left">
                     <p>Remarks: </p>
                     <p>{{$data->remarks}}</p>

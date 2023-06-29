@@ -70,3 +70,10 @@ function getServiceStatus($service_id){
   }
   return false;
 }
+function getInvoiceDetail($invoice_id){
+  $data = Invoice::where('id', $invoice_id)->first();
+  if($data){
+    return $data;
+  }
+  return false;
+}

@@ -36,14 +36,18 @@ class InvoiceController extends Controller
            if ($request->ajax()) { 
              $user_id= $request->value;
             $services = client_services::where('client_id',$user_id)->get();
-            // dd($services)
-             return view('admin.invoice.filter_service', ["services"=>$services]);
+            $advance = User::where('id',$user_id)->first()->advance;
+            // dd($advance);
+            // dd($services);
+             return view('admin.invoice.filter_service', ["services"=>$services, "advance"=>$advance]);
         }
-
+        // dd($user_id);
+        $allService = Service::all();
         $service = client_services::all();
         return view('admin.invoice.add', [
             "users"=>$users, 
             "service"=> $service,
+            "allService"=>$allService,
         ]);
     }
 
@@ -124,11 +128,12 @@ class InvoiceController extends Controller
         // dd($invoice);
         $users =  User::all();
         $user = User::where('id',$invoice->user_id)->first(); 
-
+        $allService = Service::all();
         return view('admin.invoice.edit', [
             "invoice"=>$invoice,
             "users"=>$users,
-            "user"=>$user,           
+            "user"=>$user,
+            "allService"=>$allService           
         ]);
     }
 
@@ -172,7 +177,8 @@ class InvoiceController extends Controller
         // dd($service);
         $rates = $request->get("rate");
         $amounts = $request->get("amount");
-        $particulars = $request->get("particular");
+        $particulars = $request->get("services");
+        // dd($particulars);
         $times = $request->get("time");
 
         for ($i = 0; $i < count($rates); $i++) {
@@ -184,8 +190,8 @@ class InvoiceController extends Controller
                 "invoice_id"=>$invoice->id,
             ]);
          }
-
-         return redirect()->route('admin.clients.details', $user->id);
+         
+         return redirect()->route('admin.invoice.view', $invoice->id);
     }
 
     public function delete($invoice_no){
@@ -240,10 +246,19 @@ class InvoiceController extends Controller
         return redirect()->back()->with('message','Invoice has been canceled successfully');
     }
     public function markPaid($id){
+        // dd($id);
        $invoice = Invoice::find($id);
     //    dd($invoice);
-    $invoice->invoice_status = '1';
-    $invoice->update();
+
+    if($invoice->service_id != null){
+        $service = client_services::where('id', $invoice->service_id)->first();
+        $service->update([
+            'status'=>'1'
+        ]);
+    }else{
+        $invoice->invoice_status = '1';
+        $invoice->update();
+    }
     return back()->with('message', 'Status Updated');   
     }
 }

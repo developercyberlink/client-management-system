@@ -22,6 +22,7 @@ use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\AdminDocumentController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\User\UserTaskController;
+use App\Http\Controllers\PaymentRecepitController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\UserTaskManageController;
 use App\Http\Controllers\AdminAuth\LoginController;
@@ -224,6 +225,8 @@ Route::prefix('admin')->group(function(){
             Route::controller(UserActivityController::class)->group(function () {
                 Route::name('clients.')->group(function () {
                     Route::get('/', 'index')->name('index');
+                    Route::get('/drafts', 'drafts')->name('drafts');
+                    Route::get('/update/draft/{id}', 'updateDraft')->name('updateDraft');
                     Route::post('/store', 'store')->name('store');
                     Route::post('/update', 'update')->name('update');
                     Route::get('/{id}', 'destroy')->name('destroy');
@@ -241,7 +244,7 @@ Route::prefix('admin')->group(function(){
                 });
             });
         });
-
+        // for drafts
         // Service Controller
         Route::prefix('service')->group(function () {
             Route::controller(ServiceController::class)->group(function () {
@@ -302,6 +305,14 @@ Route::prefix('admin')->group(function(){
             });
         });
 
+        Route::prefix('payment')->group(function(){
+            Route::controller(PaymentRecepitController::class)->group(function () {
+                Route::name('payment.')->group(function () {
+                    // Route::get('/payment','index')->name('payment');
+                    Route::post('/create', 'create')->name('create');
+                });
+            });
+        });
         // Invoice Analysis controller
         Route::prefix('invoiceanalysis')->group(function () {
             Route::controller(InvoiceAnalysisController::class)->group(function () {
@@ -367,6 +378,7 @@ Route::prefix('admin')->group(function(){
             });
         });
 
+        
     });
 });
 

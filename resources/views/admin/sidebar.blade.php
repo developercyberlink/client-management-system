@@ -33,6 +33,9 @@
         <li> 
          <a href="{{route('admin.clients.index')}}"><i class="la la-user"></i>  <span> Clients </span></a>
        </li>
+       <li> 
+        <a href="{{route('admin.clients.drafts')}}">  <span> Drafts </span></a>
+      </li>
         @endcan
 
 

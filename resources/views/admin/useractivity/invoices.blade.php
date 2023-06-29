@@ -48,10 +48,15 @@
                            <td>
                               <a href="{{route('admin.invoice.view', $row->id)}}"  class="btn btn-default">View</a> 
                            </td>
-                           @if(getServiceStatus($row->service_id)!= '2')
-                           <td>
-                              <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning" onclick="return confirm('Are you sure you want to cancel the invoice?')">Cancel Invoice</a>
-                           </td>
+                           @if(getServiceStatus($row->service_id)!= '2' && getServiceStatus($row->service_id)!= '1')
+                              <td>
+                                 <a href="{{route('admin.invoice.cancleInvoice',$row->id)}}" class="btn btn-warning" onclick="return confirm('Are you sure you want to cancel the invoice?')">Cancel Invoice</a>
+                              </td>
+                           @endif
+                           @if(getServiceStatus($row->service_id)!= '2' && getServiceStatus($row->service_id)!= '1')
+                              <td>
+                                 <a href="{{route('admin.invoice.markPaid',$row->id)}}" class="btn btn-success" onclick="return confirm('Are you sure you want to cancel the invoice?')">Mark as paid</a>
+                              </td>
                            @endif
                            @endcan
                            

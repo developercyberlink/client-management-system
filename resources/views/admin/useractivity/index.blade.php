@@ -86,14 +86,15 @@
                      <td>{{$row->email}} </td>                    
                      <td>
                         <div class="action-label">
-                          <a class="btn btn-white btn-sm btn-rounded  "  ><i class="fa fa-dot-circle-o text-{{($row->status == 1)?'success':'danger'}}"></i> {{($row->status == 1)?'Active':'Inactive'}}</a>
+                          <a class="btn btn-white btn-sm btn-rounded"><i class="fa fa-dot-circle-o text-{{($row->status == 1)?'success':'danger'}}"></i> {{($row->status == 1)?'Active':'Inactive'}}</a>
                         </div>
                      </td>
                      <td class="text-right">
                         <div class="dropdown dropdown-action">
                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert </i></a>
                            <div class="dropdown-menu dropdown-menu-right">                              
-                             <a class="dropdown-item" href="{{route('admin.clients.destroy', $row->id)}}" onclick="return confirm('Are you sure you want to delete this? If you want to delete the cilent it will result in deleting all the invoices and services taken by the client.')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                             {{-- <a class="dropdown-item" href="{{route('admin.clients.destroy', $row->id)}}" onclick="return confirm('Are you sure you want to delete this? If you want to delete the cilent it will result in deleting all the invoices and services taken by the client.')"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
+                              <a href="{{route('admin.clients.updateDraft', $row->id)}}" class="dropdown-item" onclick="return confirm('Are you sure you want to send the client to draft')">Send to draft</a>
                            </div>
                         </div>
                      </td>

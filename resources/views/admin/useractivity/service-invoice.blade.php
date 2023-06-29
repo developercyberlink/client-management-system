@@ -96,7 +96,7 @@
                                 {{-- @for($i=0; $i<count($invoice->invoiceItems); $i++) --}}
                                 <div class="row mb-2 mb-sm-0 py-25" id="rowl{{'1'}}">
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="particular[]" value="{{service($service->service)}} ({{ $service->domain }})" readonly id="particularl" placeholder="Particular">
+                                        <input type="text" class="form-control" name="services[]" value="{{service($service->service)}} ({{ $service->domain }})" readonly id="particularl" placeholder="Particular">
                                         
                                     </div>
                                     <div class="col-md-1"> 

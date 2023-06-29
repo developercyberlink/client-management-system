@@ -28,6 +28,8 @@ class CreateInvoicesTable extends Migration
                   ->default(null);
             $table->string("status")->nullable();
             $table->string('service_id')->nullable();
+            $table->string('invoice_status')->nullable()->default(0);
+            $table->string('final_invoice')->nullable();
             $table->timestamps();
         });
     }

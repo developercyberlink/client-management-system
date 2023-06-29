@@ -21,6 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('image');
             $table->string('status')->default(1);
+            $table->string('is_draft')->default(0);
+           
             $table->rememberToken();
             $table->timestamps();
         });
